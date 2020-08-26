@@ -1,27 +1,34 @@
 import hmac
 import time
 import hashlib
+import os 
+
+#tradingkey
+api_key = os.environ['BTSE_API_KEY']
+api_pass = os.environ['BTSE_API_PASS']
 
 #Production
 BTSE_Endpoint = 'https://api.btse.com/spot'
 BTSE_WSEndpoint = 'wss://ws.btse.com'
 
-
 # Testnet
-# BTSE_WSEndpoint = 'wss://testws.btse.io'
-# BTSE_Endpoint = 'https://testapi.btse.io/spot'
+#BTSE_WSEndpoint = 'wss://testws.btse.io'
+#BTSE_Endpoint = 'https://testapi.btse.io/spot'
 
 # API Keys
 keypair = {
-    'API-KEY': '',
-    'API-PASSPHRASE': ''
+    'API-KEY': api_key,
+    'API-PASSPHRASE': api_pass
 }
 
+print("Keypair:")
+print(keypair)
 
 
 ##Make Signature headers
 def make_headers(path, data):
     nonce = str(int(time.time()*1000))
+    print("nonce:" + nonce)
     message = path + nonce + data
 
     headers = {}

@@ -2,7 +2,7 @@ import socket
 import requests
 import json
 
-from btseauth_spot import *
+from btseauth_spot import make_headers, BTSE_Endpoint
 
 
 ## Delete an order
