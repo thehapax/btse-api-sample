@@ -4,6 +4,7 @@ import json
 
 from btseauth_spot import BTSE_Endpoint, make_headers
 
+# works on testnet
 
 ## Get Open Orders
 open_order_params = {'symbol': 'BTC-USD'}

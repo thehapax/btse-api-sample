@@ -7,6 +7,9 @@ import websockets
 
 from btseauth_spot import gen_auth, keypair, BTSE_WSEndpoint
 
+# works on testnet and production
+
+
 async def connect_forever():
     path = '/spotWS'
     url = BTSE_WSEndpoint + path

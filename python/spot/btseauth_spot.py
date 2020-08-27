@@ -3,17 +3,20 @@ import time
 import hashlib
 import os 
 
+# works on testnet and production
+
+
 #tradingkey
 api_key = os.environ['BTSE_API_KEY']
 api_pass = os.environ['BTSE_API_PASS']
 
 #Production
-BTSE_Endpoint = 'https://api.btse.com/spot'
-BTSE_WSEndpoint = 'wss://ws.btse.com'
+#BTSE_Endpoint = 'https://api.btse.com/spot'
+#BTSE_WSEndpoint = 'wss://ws.btse.com'
 
 # Testnet
-#BTSE_WSEndpoint = 'wss://testws.btse.io'
-#BTSE_Endpoint = 'https://testapi.btse.io/spot'
+BTSE_WSEndpoint = 'wss://testws.btse.io'
+BTSE_Endpoint = 'https://testapi.btse.io/spot'
 
 # API Keys
 keypair = {

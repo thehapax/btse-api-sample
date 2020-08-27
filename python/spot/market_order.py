@@ -5,6 +5,9 @@ import json
 from btseauth_spot import make_headers, BTSE_Endpoint
 
 
+# need to fix - error on testnet
+# {"errorCode":400,"message":"BADREQUEST: Size and Price should not be mixed","status":400}
+
 ## Place a market order
 mkt_order_form = {
   "price": 7000,

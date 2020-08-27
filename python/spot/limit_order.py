@@ -4,8 +4,7 @@ import json
 
 from btseauth_spot import BTSE_Endpoint, make_headers
 
-
-
+# works on testnet
 ## Place a limit order
 limit_order_form = {
   "price": 7010,
