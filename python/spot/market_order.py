@@ -4,13 +4,20 @@ import json
 
 from btseauth_spot import make_headers, BTSE_Endpoint
 
+# works on testnet
 
-# need to fix - error on testnet
-# {"errorCode":400,"message":"BADREQUEST: Size and Price should not be mixed","status":400}
+'''
+ For Market Orders, you will get this errorCode: 400 if you try to use both size and price. 
+ So pick one and stick with it. For example, "just the "size" 0.002 btc will do just 
+ fine as below, with price commented out. 
+
+ {"errorCode":400,"message":"BADREQUEST: Size and Price should not be mixed","status":400}
+
+'''
 
 ## Place a market order
 mkt_order_form = {
-  "price": 7000,
+#  "price": 7000,
   "side": "BUY",
   "size": 0.002,
   "symbol": "BTC-USD",
