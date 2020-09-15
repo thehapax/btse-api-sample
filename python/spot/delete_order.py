@@ -7,7 +7,7 @@ from btseauth_spot import make_headers, BTSE_Endpoint
 # works on testnet
 
 ## Delete an order
-cancel_params = {'orderID': 'd388db41-54d8-42f0-b626-8bcf7fb09cac', 'symbol': 'BTC-USD'}
+cancel_params = {'orderID': '00fbfa28-1d32-4801-a926-1af0b88527d4', 'symbol': 'BTC-USD'}
 
 path = '/api/v3.1/order'
 r = requests.delete(

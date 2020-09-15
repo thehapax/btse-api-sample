@@ -8,7 +8,7 @@ import os
 
 #tradingkey
 api_key = os.environ['BTSE_API_KEY']
-api_pass = os.environ['BTSE_API_PASS']
+api_pass = os.environ['BTSE_SECRET_KEY']
 
 #Production
 #BTSE_Endpoint = 'https://api.btse.com/spot'

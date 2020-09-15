@@ -10,6 +10,9 @@ from btseauth_spot import BTSE_Endpoint, make_headers
 open_order_params = {'symbol': 'BTC-USD'}
 
 path = '/api/v3.1/user/open_orders'
+headers=make_headers(path, '')
+print(headers)
+
 r = requests.get(
     BTSE_Endpoint+ path,
     params=open_order_params,
