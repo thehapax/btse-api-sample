@@ -15,13 +15,13 @@ trades = 'https://api.btse.com/spot/api/v3.2/trades'
 
 # does not require symbol
 epoch_time = 'https://api.btse.com/spot/api/v3.2/time'
-
 pp = pprint.PrettyPrinter(indent=4)
+symbol = 'BTC-USD'
+
 headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
 
-symbol = 'BTC-USD'
 
 def get_market(symbol):
     print("\n======= GET Market Summary ======")
@@ -85,11 +85,12 @@ def get_ohlcv(symbol):
     return r.json()
 
 
-result = get_epochtime()
-result = get_market(symbol)
-result = get_ohlcv(symbol)
+if __name__ == "__main__":
+    result = get_epochtime()
+    result = get_market(symbol)
+    result = get_ohlcv(symbol)
 
-result = get_l1(symbol)
-result = get_l2(symbol)
-result = get_price(symbol)
-result = get_trades(symbol)
+    result = get_l1(symbol)
+    result = get_l2(symbol)
+    result = get_price(symbol)
+    result = get_trades(symbol)
