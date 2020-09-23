@@ -1,7 +1,8 @@
-# From Public Endpoints
-# get market summary
-# get ohlcv
+# From BTSE Public Endpoints -
+# https://www.btse.com/apiexplorer/spot/?python#btse-spot-api-public-endpoints
+# get market summary, ohlcv
 # get orderbook L1 and L2
+# get price, trades, epoch time
 import requests
 import pprint
 
@@ -21,7 +22,6 @@ symbol = 'BTC-USD'
 headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
-
 
 def get_market(symbol):
     print("\n======= GET Market Summary ======")

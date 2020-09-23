@@ -5,18 +5,24 @@ import os
 
 # works on testnet and production
 
-
-#tradingkey
-api_key = os.environ['BTSE_API_KEY']
-api_pass = os.environ['BTSE_SECRET_KEY']
-
 #Production
-#BTSE_Endpoint = 'https://api.btse.com/spot'
-#BTSE_WSEndpoint = 'wss://ws.btse.com'
+api_key = os.environ['LIVE_BTSE_API_KEY']
+api_pass = os.environ['LIVE_BTSE_SECRET_KEY']
+
+# production
+BTSE_Endpoint = 'https://api.btse.com/spot'
+BTSE_WSEndpoint = 'wss://ws.btse.com'
 
 # Testnet
-BTSE_WSEndpoint = 'wss://testws.btse.io'
-BTSE_Endpoint = 'https://testapi.btse.io/spot'
+#BTSE_WSEndpoint = 'wss://testws.btse.io'
+#BTSE_Endpoint = 'https://testapi.btse.io/spot'
+
+#testnet tradingkey
+#api_key = os.environ['BTSE_API_KEY']
+#api_pass = os.environ['BTSE_SECRET_KEY']
+
+
+
 
 # API Keys
 keypair = {
