@@ -85,12 +85,48 @@ def get_ohlcv(symbol):
     return r.json()
 
 
+def get_orderbook_data(result): # use L2 orderbook with timestamp
+    bids = result['buyQuote']
+    asks = result['sellQuote']
+    ts = result['timestamp']
+    symbol = result['symbol']
+    print("==== Parsed Orderbook Data")
+    print("\nSymbol: " + str(symbol))
+    print("\nTimestamp: " + str(ts))
+    print("\n===== BIDS =====")
+    print(bids)
+    print("\n===== ASKS =====")
+    print(asks)
+    print("side of bids array")
+    print(len(bids))
+    print("side of asks array")
+    print(len(asks))
+
 if __name__ == "__main__":
+    '''
     result = get_epochtime()
     result = get_market(symbol)
     result = get_ohlcv(symbol)
+    '''
 
-    result = get_l1(symbol)
+#    result = get_l1(symbol)
     result = get_l2(symbol)
-    result = get_price(symbol)
-    result = get_trades(symbol)
+#    result = get_price(symbol)
+#    result = get_trades(symbol)
+
+    get_orderbook_data(result)
+
+'''
+result from get L2 order book
+
+{   'buyQuote': [   {'price': '10232.0', 'size': '0.308'},
+                    {'price': '10230.5', 'size': '0.199'},
+                    {'price': '10228.5', 'size': '0.930'},
+                    {'price': '2565.5', 'size': '0.100'}],
+    'sellQuote': [   {'price': '29850.0', 'size': '1.892'},
+                     {'price': '10234.0', 'size': '0.110'},
+                     {'price': '10233.5', 'size': '0.302'}],
+    'symbol': 'BTC-USD',
+    'timestamp': 1600897059891}
+
+'''
