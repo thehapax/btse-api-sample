@@ -3,30 +3,26 @@ import requests
 import json
 from btseauth_spot import make_headers, BTSE_Endpoint
 
-# doesn't seem to work with testnet or production? no authorization for api key
+#path = '/api/v2/user/wallet_history'
 
-# Get User wallet - needs authentication
-'''
 path = '/api/v3.2/user/wallet'
-body = ''
-make_headers(path,body)
-r = requests.get(BTSE_Endpoint + path, headers=make_headers(path, body))
-print(r.text)
-'''
-
-path = '/api/v3.1/user/wallet'
-
-#btse_url = 'https://api.btse.com/spot'
-btse_test_url = 'https://testapi.btse.io/spot'
+btse_test_url ='https://testapi.btse.io/spot/api/v3.2/user/wallet'
 
 headers=make_headers(path, '')
-params = {"currency": "BTC"}
+params ={}
 
-#path = '/api/v3.1/order'
-r = requests.post(
+r = requests.get(
     btse_test_url,
     params=params,
-    headers=make_headers(path, json.dumps(params)))
+    headers=headers)
 
+print(str(r))
 print(r.json())
 
+
+'''
+
+r = requests.get('https://testapi.btse.io/spot/api/v3.2/user/wallet', 
+    params={}, headers = headers)
+
+'''

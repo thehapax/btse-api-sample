@@ -22,8 +22,6 @@ BTSE_Endpoint = 'https://testapi.btse.io/spot'
 #api_pass = os.environ['BTSE_SECRET_KEY']
 
 
-
-
 # API Keys
 keypair = {
     'API-KEY': api_key,
@@ -37,6 +35,7 @@ print(keypair)
 ##Make Signature headers
 def make_headers(path, data):
     nonce = str(int(time.time()*1000))
+#    nonce = str(int(time.time()))
     print("nonce:" + nonce)
     message = path + nonce + data
 
@@ -50,7 +49,8 @@ def make_headers(path, data):
     headers = {
         'btse-api':keypair['API-KEY'],
         'btse-nonce':nonce,
-        'btse-sign':signature
+        'btse-sign':signature,
+        'Accept': 'application/json;charset=UTF-8'
     }
     return headers
 
