@@ -12,7 +12,6 @@ import pprint
 # works on testnet and production
 
 # ping checker for keep alive with websocket, aka heartbeat
-#ping_checker = PeriodicChecker(period_ms = 30 * 1000)
 ping_checker = PeriodicChecker(period_ms = 8 * 1000)
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -29,10 +28,20 @@ def orderbook_payload():
     # Order book subscription, 5 levels 
     payload = {
         "op":"subscribe",
-        "args":["orderBookL2Api:BTC-USD_150"] # up to 150 entries
+        "args":["orderBookApi:BTC-USD_0"] # up to 150 entries
     }
     print("sending order book btc-usd-5 payload")
     return payload
+
+def tradehistory_payload():
+    # combined tradehistory and orderbook api
+    # tradehistory is public data
+    payload = {
+        "op":"subscribe",
+        "args":["tradeHistoryApi:BTC-USD"]
+    }
+    return payload
+
 
 def process_orderbook_data(ob):
     bids = ob['data']['buyQuote']
@@ -51,8 +60,6 @@ Sample result:
 
 '''
 
-
-
 async def connect_forever():
     path = '/spotWS'
     url = BTSE_WSEndpoint + path
@@ -66,6 +73,7 @@ async def connect_forever():
 
         # Subscription
         payload = orderbook_payload()
+        #payload = tradehistory_payload()
         await websocket.send(ujson.dumps(payload))
                        
         MESSAGE_TIMEOUT = 30.0
@@ -73,14 +81,20 @@ async def connect_forever():
 
         while True:
             try:
-                raw_msg_str: str = await asyncio.wait_for(websocket.recv(), timeout=MESSAGE_TIMEOUT)
+                response: Dict[Any] = await asyncio.wait_for(websocket.recv(), timeout=MESSAGE_TIMEOUT)
                 print("\n ======= RECEIVED: ")
-                if 'topic' in raw_msg_str:
-                    x = ujson.loads(str(raw_msg_str))  # make the string a dict
-                    process_orderbook(x)
-                    pp.pprint(x)
+
+                print(response)
+                print(type(response))
+                if "topic" in response:
+                    r = ujson.loads(str(response))  # make the string a dict
+                    for trade in r["data"]:
+                        print(trade)
+                    # process_orderbook_data(x)                    
+                    # pp.pprint(x)
                 else:
-                    print(raw_msg_str)
+                    print(" no topic in response")
+                    print(response)
             except Exception as e:
                 print(e)
 
@@ -91,17 +105,3 @@ async def connect_forever():
 
 
 asyncio.get_event_loop().run_until_complete(connect_forever())
-
-
-
-
-
-'''
-# combined tradehistory and orderbook api
-# tradehistory is public data
-payload = {
-    "op":"subscribe",
-    "args":["tradeHistoryApi:BTC-USDT"]
-}
-await websocket.send(ujson.dumps(payload))
-'''

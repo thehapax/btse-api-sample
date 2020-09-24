@@ -5,6 +5,7 @@
 # get price, trades, epoch time
 import requests
 import pprint
+import time
 
 # requires symbol
 market_summary = 'https://api.btse.com/spot/api/v3.2/market_summary'
@@ -86,10 +87,17 @@ def get_ohlcv(symbol):
 
 
 def get_orderbook_data(result): # use L2 orderbook with timestamp
-    bids = result['buyQuote']
-    asks = result['sellQuote']
+    result['bids'] = result.pop('buyQuote')
+    result['asks'] = result.pop('sellQuote')
+    bids = result['bids']
+    asks = result['asks']
     ts = result['timestamp']
     symbol = result['symbol']
+    mbids = result.items()
+    print("extract==")
+    print(mbids)
+    
+    '''
     print("==== Parsed Orderbook Data")
     print("\nSymbol: " + str(symbol))
     print("\nTimestamp: " + str(ts))
@@ -101,20 +109,39 @@ def get_orderbook_data(result): # use L2 orderbook with timestamp
     print(len(bids))
     print("side of asks array")
     print(len(asks))
+    '''    
+#    print(result)
 
 if __name__ == "__main__":
     '''
-    result = get_epochtime()
     result = get_market(symbol)
-    result = get_ohlcv(symbol)
+    ohlcv = get_ohlcv(symbol) # this is broken on the BTSE Api side
     '''
-
-#    result = get_l1(symbol)
-    result = get_l2(symbol)
+    
+    result = get_epochtime()
+ 
+    result = get_l1(symbol)
 #    result = get_price(symbol)
 #    result = get_trades(symbol)
+#    get_orderbook_data(result)
 
-    get_orderbook_data(result)
+#    result = get_l2(symbol)
+    
+    print(time.time())
+    bids = []
+    asks = []
+    for i in result['buyQuote']:
+        bids.append(list(i.values()))
+    for i in result['sellQuote']:
+        asks.append(list(i.values()))
+    print(time.time())
+
+    ob = {'timestamp' : result['timestamp'], 'symbol': result['symbol']} 
+    ob['bids'] = bids
+    ob['asks'] = asks   
+    pp.pprint(ob)
+
+#    print(asks, bids)
 
 '''
 result from get L2 order book
