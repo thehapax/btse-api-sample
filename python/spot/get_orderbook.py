@@ -97,20 +97,6 @@ def get_orderbook_data(result): # use L2 orderbook with timestamp
     print("extract==")
     print(mbids)
     
-    '''
-    print("==== Parsed Orderbook Data")
-    print("\nSymbol: " + str(symbol))
-    print("\nTimestamp: " + str(ts))
-    print("\n===== BIDS =====")
-    print(bids)
-    print("\n===== ASKS =====")
-    print(asks)
-    print("side of bids array")
-    print(len(bids))
-    print("side of asks array")
-    print(len(asks))
-    '''    
-#    print(result)
 
 if __name__ == "__main__":
     '''
@@ -120,12 +106,11 @@ if __name__ == "__main__":
     
     result = get_epochtime()
  
-    result = get_l1(symbol)
+#    result = get_l1(symbol)
 #    result = get_price(symbol)
 #    result = get_trades(symbol)
 #    get_orderbook_data(result)
-
-#    result = get_l2(symbol)
+    result = get_l2(symbol)
     
     print(time.time())
     bids = []
@@ -141,7 +126,7 @@ if __name__ == "__main__":
     ob['asks'] = asks   
     pp.pprint(ob)
 
-#    print(asks, bids)
+
 
 '''
 result from get L2 order book

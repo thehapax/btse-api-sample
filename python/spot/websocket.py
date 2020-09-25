@@ -73,8 +73,8 @@ async def connect_forever():
         await websocket.send(auth_payload)
 
         # Subscription
-        payload = subscription_payload()
-        # payload = orderbook_payload()
+        #payload = subscription_payload()
+        payload = orderbook_payload()
         # payload = tradehistory_payload()
         await websocket.send(ujson.dumps(payload))
                        
