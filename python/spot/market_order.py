@@ -33,3 +33,25 @@ r = requests.post(
 )
 print(r.text)
 
+'''
+response from requests: 
+
+[{"status":4,
+"symbol":"BTC-USD",
+"orderType":77,
+"price":10758.0,
+"side":"BUY",
+"size":21.516,
+"orderID":"a0fca7aa-f014-4d27-b861-3c950f645bc3",
+"timestamp":1601360394360,
+"triggerPrice":0.0,
+"stopPrice":null,
+"trigger":false,
+"message":"",
+"averageFillPrice":10758.0,
+"fillSize":0.002,
+"clOrderID":"",
+"stealth":1.0,
+"deviation":1.0}]
+
+'''
