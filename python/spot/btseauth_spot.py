@@ -50,7 +50,8 @@ def make_headers(path, data):
         'btse-api':keypair['API-KEY'],
         'btse-nonce':nonce,
         'btse-sign':signature,
-        'Accept': 'application/json;charset=UTF-8'
+        'Accept': 'application/json;charset=UTF-8',
+        'Content-Type': 'application/json',
     }
     return headers
 

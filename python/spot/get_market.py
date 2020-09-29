@@ -6,7 +6,9 @@
 
 from btseauth_spot import BTSE_Endpoint
 import requests
+import pprint 
 
+pp = pprint.PrettyPrinter(indent=4)
 headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
@@ -15,4 +17,4 @@ r = requests.get(BTSE_Endpoint+'/api/v3.2/market_summary', params={
   'symbol': 'BTC-USD'
 }, headers = headers)
 
-print(r.json())
+pp.pprint(r.json())
