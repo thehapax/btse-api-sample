@@ -1,11 +1,13 @@
 import socket
 import requests
-import json
+import pprint 
 
 from btseauth_spot import BTSE_Endpoint, make_headers
-
 # works on testnet
+from utils import is_json
 
+
+pp = pprint.PrettyPrinter(indent=4)
 ## Get Open Orders
 open_order_params = {'symbol': 'BTC-USD'}
 
@@ -19,7 +21,18 @@ r = requests.get(
     headers=make_headers(path, '')
 )
 print (BTSE_Endpoint + path )
-print(r.text)
+
+res = r.text
+#print(res)
+
+if is_json(r.text):
+    res = r.json()
+    dres = res[0]
+    print(dres.get('symbol'))
+    pp.pprint(dres)
+
+
+
 
 '''
 python3 open_orders.py 

@@ -9,3 +9,9 @@ r = requests.get(BTSE_Endpoint+path,
     headers=make_headers(path, ''))
 
 print(r.json())
+
+'''
+example response: 
+[{'symbol': 'BTC-USD', 'makerFee': 0.0005, 'takerFee': 0.001}]
+
+'''

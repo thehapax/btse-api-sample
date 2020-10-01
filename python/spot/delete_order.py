@@ -17,4 +17,12 @@ r = requests.delete(
 )
 print (BTSE_Endpoint + path )
 print(r.text)
+print(r.json())
 
+'''
+response:
+https://testapi.btse.io/spot/api/v3.1/order
+
+{"errorCode":404,"message":"NOTFOUND: orderID 00fbfa28-1d32-4801-a926-1af0b88527d4 doesn't exist.","status":404}
+
+'''

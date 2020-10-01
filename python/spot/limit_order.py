@@ -29,3 +29,18 @@ r = requests.post(
 print(r.text)
 
 
+'''
+repsonse: 
+
+nonce:1601499116289
+
+[{"status":2,"symbol":"BTC-USD",
+"orderType":76,"price":7010.0,
+"side":"BUY","size":0.002,
+"orderID":"9b96f241-32c3-4610-9a31-553633632db4",
+"timestamp":1601499117485,"triggerPrice":0.0,
+"stopPrice":null,"trigger":false,"message":"",
+"averageFillPrice":0.0,"fillSize":0.0,
+"clOrderID":"","stealth":1.0,"deviation":1.0}]
+
+'''

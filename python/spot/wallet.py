@@ -2,7 +2,9 @@ import socket
 import requests
 import json
 from btseauth_spot import make_headers, BTSE_Endpoint
+import pprint 
 
+pp = pprint.PrettyPrinter(indent=4)
 #path = '/api/v2/user/wallet_history'
 
 path = '/api/v3.2/user/wallet'
@@ -19,7 +21,7 @@ r = requests.get(
     headers=headers)
 
 print(str(r))
-print(r.json())
+pp.pprint(r.json())
 
 
 '''
@@ -27,6 +29,7 @@ sample response:  - returns balances of all wallets, selective params don't seem
 
 nonce:1601362910720
 <Response [200]>
+
 [{'currency': 'USD', 'total': 9773.219, 'available': 9759.199}, 
 {'currency': 'EUR', 'total': 8000.0, 'available': 8000.0}, 
 {'currency': 'GBP', 'total': 7500.0, 'available': 7500.0}, 
