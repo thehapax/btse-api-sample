@@ -25,12 +25,14 @@ print (BTSE_Endpoint + path )
 res = r.text
 #print(res)
 
-if is_json(r.text):
-    res = r.json()
-    dres = res[0]
-    print(dres.get('symbol'))
-    pp.pprint(dres)
-
+try:
+    if is_json(r.text):
+        res = r.json()
+        dres = res[0]
+        print(dres.get('symbol'))
+        pp.pprint(dres)
+except IndexError as e:
+    print(r.text)
 
 
 
