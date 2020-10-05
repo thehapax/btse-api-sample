@@ -25,7 +25,7 @@ def subscription_payload():
     return payload
 
 def orderbook_payload():
-    # Order book subscription, 5 levels 
+    # Order book subscription, 5 levels, public data
     payload = {
         "op":"subscribe",
         "args":["orderBookApi:BTC-USD_5"] # up to 150 entries
@@ -73,8 +73,8 @@ async def connect_forever():
         await websocket.send(auth_payload)
 
         # Subscription
-        #payload = subscription_payload()
-        payload = orderbook_payload()
+        payload = subscription_payload()
+        #payload = orderbook_payload()
         # payload = tradehistory_payload()
         await websocket.send(ujson.dumps(payload))
                        

@@ -112,6 +112,7 @@ if __name__ == "__main__":
 #    get_orderbook_data(result)
     result = get_l2(symbol)
     
+    print("============")
     print(time.time())
     bids = []
     asks = []
@@ -125,6 +126,7 @@ if __name__ == "__main__":
     ob['bids'] = bids
     ob['asks'] = asks   
     pp.pprint(ob)
+
 
 
 

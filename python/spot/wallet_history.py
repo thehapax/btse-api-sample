@@ -7,8 +7,8 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 #path = '/api/v2/user/wallet_history'
 
-path = '/api/v3.2/user/wallet'
-btse_test_url ='https://testapi.btse.io/spot/api/v3.2/user/wallet'
+path = '/api/v3.2/user/wallet_history'
+btse_test_url ='https://testapi.btse.io/spot/api/v3.2/user/wallet_history'
 
 params = {'currency': 'BTC'} 
 

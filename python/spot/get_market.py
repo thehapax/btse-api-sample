@@ -15,23 +15,28 @@ headers = {
 }
 
 params = {'symbol': 'ETH-USD'}
+#params = {'symbol': 'BTC-USD'}
 
 r = requests.get(BTSE_Endpoint+'/api/v3.2/market_summary', params=params, headers = headers)
-res = r.json()[0]
+#res = r.json()[0]
 
+'''
 print("----")
 pp.pprint(res)
 print("----")
 
 minPrice = res.get('minPriceIncrement')  # type is float
 minSize = res.get('minSizeIncrement')  # type is float
-
 print(str(params))
 
 print("minPriceIncrement: " + str(minPrice))
 print("minSizeIncrement: " + str(minSize))
+'''
 
-#pp.pprint(r.json())
+print("==========>>>>>>>>>>")
+pp.pprint(r.json())
+
+
 
 '''
 from market exchange crypto.com example
@@ -78,7 +83,6 @@ example:
         'symbol': 'BTC-USD', # --------
         'timeBasedContract': False,
         'volume': 8240.5455}]
-
 '''
 
 '''
