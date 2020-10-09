@@ -7,7 +7,8 @@ pp = pprint.PrettyPrinter(indent=4)
 path = '/api/v3.2/user/trade_history'
 
 r = requests.get(BTSE_Endpoint+path,
-    params={'symbol': 'BTC-USD'},
+#    params={'symbol': 'BTC-USD'},
+    params= {'orderId': 'b3a65f8e-e838-4c13-adf4-62fef98504a1'},
     headers=make_headers(path, ''))
 
 pp.pprint(r.json())

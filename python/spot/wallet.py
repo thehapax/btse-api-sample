@@ -2,7 +2,9 @@ import socket
 import requests
 import json
 from btseauth_spot import make_headers, BTSE_Endpoint
-import pprint 
+import pprint
+from decimal import Decimal
+
 
 pp = pprint.PrettyPrinter(indent=4)
 #path = '/api/v2/user/wallet_history'
@@ -10,18 +12,32 @@ pp = pprint.PrettyPrinter(indent=4)
 path = '/api/v3.2/user/wallet'
 btse_test_url ='https://testapi.btse.io/spot/api/v3.2/user/wallet'
 
+# params ={}
 params = {'currency': 'BTC'} 
+# params don't work, all balances are returned. 
 
 headers=make_headers(path, '')
-# params ={}
 
 r = requests.get(
     btse_test_url,
     params=params,
     headers=headers)
 
-print(str(r))
-pp.pprint(r.json())
+#print(str(r))
+
+response = r.json()
+#pp.pprint(response)
+
+for coin in response:
+    if str(coin['available']) != '0.0':
+        print(str(coin['currency']))
+        avail = Decimal(str(coin['available']))
+        total = Decimal(str(coin['total']))
+        print("\tAvail: " + str(avail))
+        print("\tTotal: " + str(total))
+
+
+        
 
 
 '''

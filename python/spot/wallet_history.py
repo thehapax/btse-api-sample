@@ -10,10 +10,11 @@ pp = pprint.PrettyPrinter(indent=4)
 path = '/api/v3.2/user/wallet_history'
 btse_test_url ='https://testapi.btse.io/spot/api/v3.2/user/wallet_history'
 
-params = {'currency': 'BTC'} 
+#params = {'currency': 'USD'} 
+params ={}
+
 
 headers=make_headers(path, '')
-# params ={}
 
 r = requests.get(
     btse_test_url,
@@ -22,6 +23,108 @@ r = requests.get(
 
 print(str(r))
 pp.pprint(r.json())
+
+
+
+''' 
+wallet history: BTC
+
+[   {   'amount': 5.791103,
+        'currency': 'BTC',
+        'description': '',
+        'fees': 0.0,
+        'orderId': '20200826000711',
+        'status': 'Completed',
+        'timestamp': 1598481122773,
+        'type': 'Convert_Fiat_USDT',
+        'username': 'hapax10test',
+        'wallet': 'SPOT@'},
+    {   'amount': 1.02015,
+        'currency': 'BTC',
+        'description': '',
+        'fees': 0.0,
+        'orderId': '20200826000709',
+        'status': 'Completed',
+        'timestamp': 1598481079904,
+        'type': 'Convert_Fiat_USDT',
+        'username': 'hapax10test',
+        'wallet': 'SPOT@'},
+    {   'amount': 5.791103,
+        'currency': 'BTC',
+        'description': '',
+        'fees': 0.0,
+        'orderId': '20200826000707',
+        'status': 'Completed',
+        'timestamp': 1598481035067,
+        'type': 'Convert_Fiat_USDT',
+        'username': 'hapax10test',
+        'wallet': 'SPOT@'}]
+
+'''
+'''
+[   {   'amount': 5.791103,
+        'currency': 'BTC',
+        'description': '',
+        'fees': 0.0,
+        'orderId': '20200826000711',
+        'status': 'Completed',
+        'timestamp': 1598481122773,
+        'type': 'Convert_Fiat_USDT',
+        'username': 'hapax10test',
+        'wallet': 'SPOT@'},
+    {   'amount': 50000.0,
+        'currency': 'USDC',
+        'description': '',
+        'fees': 0.0,
+        'orderId': '20200826000712',
+        'status': 'Completed',
+        'timestamp': 1598481122695,
+        'type': 'Convert_Fiat_USDT',
+        'username': 'hapax10test',
+        'wallet': 'SPOT@'},
+    {   'amount': 1.02015,
+        'currency': 'BTC',
+        'description': '',
+        'fees': 0.0,
+        'orderId': '20200826000709',
+        'status': 'Completed',
+        'timestamp': 1598481079904,
+        'type': 'Convert_Fiat_USDT',
+        'username': 'hapax10test',
+        'wallet': 'SPOT@'},
+    {   'amount': 1000000.0,
+        'currency': 'JPY',
+        'description': '',
+        'fees': 0.0,
+        'orderId': '20200826000710',
+        'status': 'Completed',
+        'timestamp': 1598481079831,
+        'type': 'Convert_Fiat_USDT',
+        'username': 'hapax10test',
+        'wallet': 'SPOT@'},
+    {   'amount': 5.791103,
+        'currency': 'BTC',
+        'description': '',
+        'fees': 0.0,
+        'orderId': '20200826000707',
+        'status': 'Completed',
+        'timestamp': 1598481035067,
+        'type': 'Convert_Fiat_USDT',
+        'username': 'hapax10test',
+        'wallet': 'SPOT@'},
+    {   'amount': 50000.0,
+        'currency': 'TUSD',
+        'description': '',
+        'fees': 0.0,
+        'orderId': '20200826000708',
+        'status': 'Completed',
+        'timestamp': 1598481034874,
+        'type': 'Convert_Fiat_USDT',
+        'username': 'hapax10test',
+        'wallet': 'SPOT@'}]
+        
+    '''
+
 
 
 '''

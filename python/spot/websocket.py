@@ -73,9 +73,9 @@ async def connect_forever():
         await websocket.send(auth_payload)
 
         # Subscription
-        payload = subscription_payload()
+        #payload = subscription_payload()
         #payload = orderbook_payload()
-        # payload = tradehistory_payload()
+        payload = tradehistory_payload()
         await websocket.send(ujson.dumps(payload))
                        
         MESSAGE_TIMEOUT = 30.0
@@ -120,3 +120,27 @@ Sample result:
 [{'price': '10262.5', 'size': '0.286'}, {'price': '10262.0', 'size': '0.438'}, {'price': '10258.0', 'size': '0.610'}, {'price': '10257.5', 'size': '0.198'}, {'price': '10257.0', 'size': '0.281'}, {'price': '10256.5', 'size': '0.138'}, {'price': '10256.0', 'size': '0.161'}, {'price': '10255.5', 'size': '0.304'}, {'price': '10254.5', 'size': '0.092'}, {'price': '10254.0', 'size': '0.332'}]
 
 '''
+
+'''
+
+{   'data': [   {   'price': 10758.0,
+                    'side': 'BUY',
+                    'size': 0.092,
+                    'symbol': 'BTC-USD',
+                    'timestamp': 1601873979246,
+                    'tradeId': 110985476},
+                {   'price': 10500.0,
+                    'side': 'BUY',
+                    'size': 5.0,
+                    'symbol': 'BTC-USD',
+                    'timestamp': 1601213574958,
+                    'tradeId': 110722582},
+                {   'price': 10500.0,
+                    'side': 'BUY',
+                    'size': 25.0,
+                    'symbol': 'BTC-USD',
+                    'timestamp': 1601213564931,
+                    'tradeId': 110722580}],
+    'topic': 'tradeHistoryApi:BTC-USD'}
+    
+    '''
