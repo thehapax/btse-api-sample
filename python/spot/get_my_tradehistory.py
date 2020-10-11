@@ -2,18 +2,30 @@ import requests
 import json
 from btseauth_spot import BTSE_Endpoint, make_headers
 import pprint
+from decimal import Decimal
 
 pp = pprint.PrettyPrinter(indent=4)
 path = '/api/v3.2/user/trade_history'
 
+# 'serialId': 111129514,
+
+# params = {}
+# must use startTime in order to filter appropriately, or too much data returned
+# 13 digit timestamp
+
+params={'symbol': 'BTC-USD',
+        'orderId': 'b3a65f8e-e838-4c13-adf4-62fef98504a1',
+        'startTime': 1602229229000 } 
+
+
 r = requests.get(BTSE_Endpoint+path,
-#    params={'symbol': 'BTC-USD'},
-    params= {'orderId': 'b3a65f8e-e838-4c13-adf4-62fef98504a1'},
-    headers=make_headers(path, ''))
+                params=params,
+                headers=make_headers(path, ''))
 
 pp.pprint(r.json())
 
 '''
+Already closed Orders
             
     [   {   'base': 'BTC',
         'clOrderID': None,

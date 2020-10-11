@@ -72,10 +72,10 @@ async def connect_forever():
         auth_payload = ujson.dumps(auth)
         await websocket.send(auth_payload)
 
-        # Subscription
-        #payload = subscription_payload()
-        #payload = orderbook_payload()
-        payload = tradehistory_payload()
+        # Subscription - order notifications
+        payload = subscription_payload()
+        # payload = orderbook_payload()
+        # payload = tradehistory_payload()
         await websocket.send(ujson.dumps(payload))
                        
         MESSAGE_TIMEOUT = 30.0

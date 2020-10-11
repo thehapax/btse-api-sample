@@ -8,11 +8,11 @@ from btseauth_spot import make_headers, BTSE_Endpoint
 
 #  "clOrderID": "MYOWNORDERID"
 ## Delete an order
-# cancel_params = {'orderID': '164f9eec-6a6c-4c73-b43b-3f828dde67ca', 
-#                 'symbol': 'BTC-USD'}
-
-cancel_params = {'clOrderID': 'MYOWNORDERID', 
+cancel_params = {'orderID': '01d9a550-4acd-4f12-990f-ef496f325a7b', 
                  'symbol': 'BTC-USD'}
+
+#cancel_params = {'clOrderID': 'MYOWNORDERID', 
+#                 'symbol': 'BTC-USD'}
 
 
 path = '/api/v3.1/order'

@@ -10,7 +10,7 @@ from btseauth_spot import BTSE_Endpoint, make_headers
 ## Place a limit order with price at 7010
 
 limit_order_form = {
-  "price": 7010,
+  "price": 7050,
   "side": "BUY",
   "size": 0.002,
   "symbol": "BTC-USD",
@@ -18,7 +18,7 @@ limit_order_form = {
   "triggerPrice": 0,
   "txType": "LIMIT",
   "type": "LIMIT",
-  "clOrderID": "MYOWNORDERID",
+  "clOrderID": "MYOWNORDERID2",
 }
 
 path = '/api/v3.1/order'

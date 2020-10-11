@@ -2,10 +2,25 @@ import socket
 import requests
 import pprint 
 
+from typing import (
+    Dict,
+    List,
+    Optional,
+    Any,
+    AsyncIterable,
+)
+
+
 from btseauth_spot import BTSE_Endpoint, make_headers
 # works on testnet
 from utils import is_json
 
+# method to check if orderID = dac5fa04-e419-4054-8fc3-1ed922d595c1 is still an openorder
+def get_active_order(id, trade_msg: Dict[str, Any]):
+    for open_trade in trade_msg:
+        if open_trade['orderID'] == id:
+            return open_trade
+        
 
 pp = pprint.PrettyPrinter(indent=4)
 ## Get Open Orders
@@ -22,9 +37,10 @@ r = requests.get(
 )
 print (BTSE_Endpoint + path )
 
-res = r.text
+#res = r.text
 #print(res)
 
+''' what was this used for? 
 try:
     if is_json(r.text):
         res = r.json()
@@ -33,7 +49,19 @@ try:
         pp.pprint(dres)
 except IndexError as e:
     print(r.text)
+'''
 
+# all open orders 
+pp.pprint(r.json())
+
+# get just this one open order
+'''
+trade_msg = r.json()
+order_id = 'dac5fa04-e419-4054-8fc3-1ed922d595c1'
+
+orderinfo = get_active_order(order_id, trade_msg)
+pp.pprint(orderinfo)
+'''
 
 
 '''

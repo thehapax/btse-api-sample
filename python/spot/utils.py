@@ -17,3 +17,25 @@ def is_json(myjson):
     except ValueError:
         return False
 
+
+def get_base(symbol):
+    pairs = symbol.split('-')
+    return pairs[0]
+
+def get_quote(symbol):
+    pairs = symbol.split('-')
+    return pairs[1]
+
+
+# 'symbol': 'BTC-USD', 
+if __name__ == "__main__":
+    symbol = 'BTC-USD'    
+    print(symbol)
+    base = get_base(symbol)
+    print(base)
+    quote = get_quote(symbol)
+    print(quote)
+    
+    
+    
+    
