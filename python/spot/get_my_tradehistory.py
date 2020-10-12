@@ -13,8 +13,9 @@ path = '/api/v3.2/user/trade_history'
 # must use startTime in order to filter appropriately, or too much data returned
 # 13 digit timestamp
 
-params={'symbol': 'BTC-USD',
-        'orderId': 'b3a65f8e-e838-4c13-adf4-62fef98504a1',
+#params={'symbol': 'BTC-USD',
+
+params = { 'orderId': 'b3a65f8e-e838-4c13-adf4-62fef98504a1',
         'startTime': 1602229229000 } 
 
 
@@ -25,7 +26,7 @@ r = requests.get(BTSE_Endpoint+path,
 pp.pprint(r.json())
 
 '''
-Already closed Orders
+Already closed Orders, that have been fully transacted. 
             
     [   {   'base': 'BTC',
         'clOrderID': None,
@@ -49,6 +50,7 @@ Already closed Orders
         'triggerType': 0,
         'username': 'hapax10test',
         'wallet': 'SPOT@'},
+        
     {   'base': 'BTC',
         'clOrderID': None,
         'feeAmount': 2e-06,

@@ -6,3 +6,5 @@ archive
 btse-archive
 btse_fees
 fixtures
+btse_fees.py
+fixtures.py

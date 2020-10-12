@@ -61,7 +61,91 @@ order_id = 'dac5fa04-e419-4054-8fc3-1ed922d595c1'
 
 orderinfo = get_active_order(order_id, trade_msg)
 pp.pprint(orderinfo)
+
+
+EXAMPLE RESPONSE for open orders: 10/10/2020
+
+[   {   'averageFillPrice': 0.0,
+        'cancelDuration': 0,
+        'clOrderID': 'MYOWNORDERID2',
+        'fillSize': 0.0,
+        'filledSize': 0.0,
+        'orderID': 'cb2d5a05-357d-425a-b965-789d2727fb5a',
+        'orderState': 'STATUS_ACTIVE',
+        'orderType': 76,
+        'orderValue': 14.1,
+        'pegPriceDeviation': 0.0,
+        'pegPriceMax': 0.0,
+        'pegPriceMin': 0.0,
+        'price': 7050.0,
+        'side': 'BUY',
+        'size': 0.002,
+        'symbol': 'BTC-USD',
+        'timestamp': 1602376422318,
+        'trailValue': 0.0,
+        'triggerOrder': False,
+        'triggerOrderType': 0,
+        'triggerOriginalPrice': 0.0,
+        'triggerPrice': 0.0,
+        'triggerStopPrice': 0.0,
+        'triggerTrailingStopDeviation': 0.0,
+        'triggered': False},
+    {   'averageFillPrice': 0.0,
+        'cancelDuration': 0,
+        'clOrderID': 'MYOWNORDERID',
+        'fillSize': 0.0,
+        'filledSize': 0.0,
+        'orderID': '4d607bd2-2da3-49ad-b6e7-88cf187386e7',
+        'orderState': 'STATUS_ACTIVE',
+        'orderType': 76,
+        'orderValue': 14.02,
+        'pegPriceDeviation': 0.0,
+        'pegPriceMax': 0.0,
+        'pegPriceMin': 0.0,
+        'price': 7010.0,
+        'side': 'BUY',
+        'size': 0.002,
+        'symbol': 'BTC-USD',
+        'timestamp': 1602376395636,
+        'trailValue': 0.0,
+        'triggerOrder': False,
+        'triggerOrderType': 0,
+        'triggerOriginalPrice': 0.0,
+        'triggerPrice': 0.0,
+        'triggerStopPrice': 0.0,
+        'triggerTrailingStopDeviation': 0.0,
+        'triggered': False},
+    {   'averageFillPrice': 0.0,
+        'cancelDuration': 0,
+        'clOrderID': 'MYOWNORDERID',
+        'fillSize': 0.0,
+        'filledSize': 0.0,
+        'orderID': 'dac5fa04-e419-4054-8fc3-1ed922d595c1',
+        'orderState': 'STATUS_ACTIVE',
+        'orderType': 76,
+        'orderValue': 14.02,
+        'pegPriceDeviation': 0.0,
+        'pegPriceMax': 0.0,
+        'pegPriceMin': 0.0,
+        'price': 7010.0,
+        'side': 'BUY',
+        'size': 0.002,
+        'symbol': 'BTC-USD',
+        'timestamp': 1602376392429,
+        'trailValue': 0.0,
+        'triggerOrder': False,
+        'triggerOrderType': 0,
+        'triggerOriginalPrice': 0.0,
+        'triggerPrice': 0.0,
+        'triggerStopPrice': 0.0,
+        'triggerTrailingStopDeviation': 0.0,
+        'triggered': False}]
+
+
+
+
 '''
+
 
 
 '''
