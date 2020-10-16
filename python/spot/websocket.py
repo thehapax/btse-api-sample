@@ -59,7 +59,7 @@ def get_auth_responses(response):
     for k,v in lookup.items():
         if k in response:
             return v
-            
+
 
 async def connect_forever():
     path = '/spotWS'
@@ -71,33 +71,30 @@ async def connect_forever():
         print("***** GEN AUTH: *****" + str(auth))
         auth_payload = ujson.dumps(auth)
         await websocket.send(auth_payload)
-
+        
         # Subscription - order notifications
-        payload = subscription_payload()
-        # payload = orderbook_payload()
-        # payload = tradehistory_payload()
-        await websocket.send(ujson.dumps(payload))
-                       
+        payload1 = subscription_payload()
+        payload2 = orderbook_payload()
+        payload3 = tradehistory_payload()
+        await websocket.send(ujson.dumps(payload1))
+        await websocket.send(ujson.dumps(payload2))
+        await websocket.send(ujson.dumps(payload3))
+                 
         MESSAGE_TIMEOUT = 30.0
         PING_TIMEOUT = 10.0
 
         while True:
             try:
                 response: Dict[Any] = await asyncio.wait_for(websocket.recv(), timeout=MESSAGE_TIMEOUT)
-                print("\n ======= RECEIVED: ")
-
-                print(type(response))
-                # x = ujson.loads(str(response))
-                # pp.pprint(x)
-                
+                print("\n======= WEBSOCKET DATA RECEIVED: ======= \n")
                 if "topic" in response:
-                    r = ujson.loads(str(response))  # make the string a dict
-                    pp.pprint(r)
-                    #process_orderbook_data(x)
-                    #for trade in r["data"]:
-                    #    print(trade)
+                    r = ujson.loads(str(response))
+                    if "orderBookApi" in r['topic']:
+                        process_orderbook_data(r)
+                    else:
+                        pp.pprint(r)                        
                 else:
-                    print("no topic in response")
+                    print("No topic in response")
                     code = get_auth_responses(response)
                     print(code + ": " + response)
             except Exception as e:
@@ -113,7 +110,7 @@ asyncio.get_event_loop().run_until_complete(connect_forever())
 
 
 '''
-Sample result:
+Sample process_orderbook_data result:
 ===== Bids =====
 [{'price': '10247.0', 'size': '0.112'}, {'price': '10246.5', 'size': '0.471'}, {'price': '10246.0', 'size': '0.237'}, {'price': '10245.0', 'size': '0.319'}, {'price': '10243.5', 'size': '0.960'}, {'price': '10243.0', 'size': '1.119'}, {'price': '10242.5', 'size': '1.288'}, {'price': '10242.0', 'size': '2.521'}, {'price': '10241.5', 'size': '3.273'}, {'price': '10240.5', 'size': '0.466'}]
 ==== Asks =====
@@ -122,6 +119,7 @@ Sample result:
 '''
 
 '''
+Sample trade history result:
 
 {   'data': [   {   'price': 10758.0,
                     'side': 'BUY',
