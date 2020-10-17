@@ -81,7 +81,6 @@ async def connect_forever():
         await websocket.send(ujson.dumps(payload3))
                  
         MESSAGE_TIMEOUT = 30.0
-        PING_TIMEOUT = 10.0
 
         while True:
             try:
@@ -91,6 +90,7 @@ async def connect_forever():
                     r = ujson.loads(str(response))
                     if "orderBookApi" in r['topic']:
                         process_orderbook_data(r)
+                        pp.pprint(r)
                     else:
                         pp.pprint(r)                        
                 else:
@@ -142,3 +142,25 @@ Sample trade history result:
     'topic': 'tradeHistoryApi:BTC-USD'}
     
     '''
+    
+
+# Raw order book  data:
+'''
+    {'data': { 'buyQuote': [    {'price': '10600.0', 'size': '200.002'},
+                                {'price': '10500.0', 'size': '620.000'},
+                                {'price': '7000.0', 'size': '0.002'},
+                                {'price': '1000.0', 'size': '1.000'},
+                                {'price': '100.0', 'size': '0.003'},
+                                {'price': '0.0', 'size': '34.016'}],
+                'currency': 'USD',
+                'sellQuote': [   {'price': '113700.0', 'size': '0.001'},
+                                    {'price': '12000.0', 'size': '6.740'},
+                                    {'price': '11800.0', 'size': '5095.000'},
+                                    {'price': '11600.0', 'size': '185.000'},
+                                    {'price': '11500.0', 'size': '525.000'},
+                                    {'price': '11400.0', 'size': '75.000'},
+                                    {'price': '10900.0', 'size': '38859.849'}],
+                'symbol': 'BTC-USD',
+                'timestamp': 1602890445777},
+        'topic': 'orderBookApi:BTC-USD_5'}
+'''
