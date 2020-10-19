@@ -28,6 +28,7 @@ open_order_params = {'symbol': 'BTC-USD'}
 
 path = '/api/v3.2/user/open_orders'
 headers=make_headers(path, '')
+print("headers:")
 print(headers)
 
 r = requests.get(
@@ -35,6 +36,7 @@ r = requests.get(
     params=open_order_params,
     headers=make_headers(path, '')
 )
+print("endpoint:")
 print (BTSE_Endpoint + path )
 
 #res = r.text
@@ -52,6 +54,7 @@ except IndexError as e:
 '''
 
 # all open orders 
+print("\nAll open Orders:")
 pp.pprint(r.json())
 
 # get just this one open order

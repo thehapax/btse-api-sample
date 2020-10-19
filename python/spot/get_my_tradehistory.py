@@ -23,7 +23,10 @@ r = requests.get(BTSE_Endpoint+path,
                 params=params,
                 headers=make_headers(path, ''))
 
-pp.pprint(r.json())
+result = r.json()
+pp.pprint(result)
+
+
 
 '''
 Already closed Orders, that have been fully transacted. 

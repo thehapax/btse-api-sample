@@ -14,8 +14,8 @@ headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
 
-params = {'symbol': 'ETH-USD'}
-#params = {'symbol': 'BTC-USD'}
+#params = {'symbol': 'ETH-USD'}
+params = {'symbol': 'BTC-USDT'}
 
 r = requests.get(BTSE_Endpoint+'/api/v3.2/market_summary', params=params, headers = headers)
 #res = r.json()[0]

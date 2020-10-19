@@ -4,10 +4,11 @@ import hmac
 import hashlib
 import time
 import websockets
+import pprint
+import ujson
 
 from btseauth_spot import gen_auth, keypair, BTSE_WSEndpoint
 from PeriodicChecker import PeriodicChecker
-import pprint
 
 # works on testnet and production
 
@@ -53,13 +54,16 @@ def process_orderbook_data(ob):
 def get_auth_responses(response):
     lookup = {'UNLOGIN_USER connect success': 'Connected No Login or bad token', 
               'connect success': 'connected with token',
-              'is authenticated successfully': 'do auth pass',
+              'is authenticated successfully': 'Do Auth Pass',
               'AUTHENTICATE ERROR': 'do auth pass failed' }
+    
+    if "topic" in str(response):
+        return ujson.loads(response)
     
     for k,v in lookup.items():
         if k in response:
-            return v
-
+            rdict = {"topic":"auth", "message": str(response), "info": str(v)} 
+            return ujson.dumps(rdict)
 
 async def connect_forever():
     path = '/spotWS'
@@ -76,9 +80,9 @@ async def connect_forever():
         payload1 = subscription_payload()
         payload2 = orderbook_payload()
         payload3 = tradehistory_payload()
-        await websocket.send(ujson.dumps(payload1))
-        await websocket.send(ujson.dumps(payload2))
-        await websocket.send(ujson.dumps(payload3))
+        #await websocket.send(ujson.dumps(payload1))
+        #await websocket.send(ujson.dumps(payload2))
+        #await websocket.send(ujson.dumps(payload3))
                  
         MESSAGE_TIMEOUT = 30.0
 
@@ -96,7 +100,8 @@ async def connect_forever():
                 else:
                     print("No topic in response")
                     code = get_auth_responses(response)
-                    print(code + ": " + response)
+                    print(type(code))
+                    print(code)
             except Exception as e:
                 print(e)
 
