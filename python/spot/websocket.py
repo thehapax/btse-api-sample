@@ -82,7 +82,7 @@ async def connect_forever():
         payload3 = tradehistory_payload()
         #await websocket.send(ujson.dumps(payload1))
         #await websocket.send(ujson.dumps(payload2))
-        #await websocket.send(ujson.dumps(payload3))
+        await websocket.send(ujson.dumps(payload3))
                  
         MESSAGE_TIMEOUT = 30.0
 
@@ -95,8 +95,13 @@ async def connect_forever():
                     if "orderBookApi" in r['topic']:
                         process_orderbook_data(r)
                         pp.pprint(r)
-                    else:
-                        pp.pprint(r)                        
+                    elif "tradeHistoryApi" in r['topic']:
+                        # pp.pprint(r)
+                        data = r['data']
+                        # pp.pprint(data)
+                        for trade in r["data"]:
+                            trade: Dict[Any] = trade
+                            print(trade)
                 else:
                     print("No topic in response")
                     code = get_auth_responses(response)

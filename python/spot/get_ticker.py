@@ -21,14 +21,29 @@ headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
 
-r = requests.get(BTSE_Endpoint+'/api/v3.2/price', params={
-#  'symbol': 'BTC-USDT'
-}, headers = headers)
+url = BTSE_Endpoint+'/api/v3.2/price'
+print(url)
 
+r = requests.get(url, params={'symbol': 'BTC-USDT'}, headers = headers)
 pp.pprint(r.json())
+print("\n")
 
+res = r.json()
+content = res[0]
+pp.pprint(content)
+
+print("\n")
+symbol = content['symbol']
+pp.pprint(symbol)
+
+s = res[0]['symbol']
+print(s)
+print(type(s))
+
+'''
 all_trading_pairs: List[Dict[str, Any]] = r.json()
 all_symbols = [item["symbol"] for item in all_trading_pairs]
+'''
 
 #print(all_trading_pairs)
 #print(all_symbols)

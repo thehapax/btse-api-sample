@@ -20,7 +20,7 @@ mkt_order_form = {
 #  "price": 7000,
   "side": "BUY",
   "size": 0.002,
-  "symbol": "BTC-USDT",
+  "symbol": "ETH-USDT",
   "txType": "LIMIT",
   "type": "MARKET"
 }

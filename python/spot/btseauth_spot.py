@@ -17,6 +17,10 @@ api_pass = os.environ['BTSE_SECRET_KEY']
 BTSE_WSEndpoint = 'wss://testws.btse.io'
 BTSE_Endpoint = 'https://testapi.btse.io/spot'
 
+
+# websocket full url 
+spot_wss = 'wss://testws.btse.io/spotWS'
+
 #testnet tradingkey
 #api_key = os.environ['BTSE_API_KEY']
 #api_pass = os.environ['BTSE_SECRET_KEY']

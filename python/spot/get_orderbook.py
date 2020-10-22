@@ -8,6 +8,7 @@ import pprint
 import time
 
 # requires symbol
+main_url = 'https://api.btse.com/spot'
 market_summary = 'https://api.btse.com/spot/api/v3.2/market_summary'
 ohlcv = 'https://api.btse.com/spot/api/v3.2/ohlcv'
 L1 = 'https://api.btse.com/spot/api/v3.2/orderbook'
@@ -23,6 +24,14 @@ symbol = 'BTC-USD'
 headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
+
+def get_main():
+    r = requests.get(main_url,
+                     params={}, 
+                     headers= headers)
+    print(type(r))
+    print(r.json())
+    return r.json()
 
 def get_market(symbol):
     print("\n======= GET Market Summary ======")
@@ -99,17 +108,19 @@ def get_orderbook_data(result): # use L2 orderbook with timestamp
     
 
 if __name__ == "__main__":
+    r = get_main()
+    #result = get_market(symbol)
     '''
-    result = get_market(symbol)
     ohlcv = get_ohlcv(symbol) # this is broken on the BTSE Api side
     '''
     
-    result = get_epochtime()
+#    result = get_epochtime()
  
 #    result = get_l1(symbol)
 #    result = get_price(symbol)
 #    result = get_trades(symbol)
 #    get_orderbook_data(result)
+'''
     result = get_l2(symbol)
     
     print("============")
@@ -127,7 +138,7 @@ if __name__ == "__main__":
     ob['asks'] = asks   
     pp.pprint(ob)
 
-
+'''
 
 
 '''
