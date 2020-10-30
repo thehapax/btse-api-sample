@@ -2,6 +2,7 @@ import aiohttp
 import asyncio
 import logging
 import pprint
+import time
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -35,6 +36,15 @@ async def get_ticker():
         return data
 
 def main():
+    '''
+    print(time.time())
+    ev_loop: asyncio.BaseEventLoop = asyncio.get_event_loop()
+    ev_loop.run_until_complete(asyncio.sleep(2.0))
+    print("end of wait")
+    print(time.time())
+    '''
+    
+    # test get ticker
     loop = asyncio.get_event_loop()
     loop.run_until_complete(get_ticker())
     loop.close()

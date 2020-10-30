@@ -1,7 +1,8 @@
-import socket
 import requests
+import json
+import aiohttp
+import asyncio
 import pprint 
-
 from typing import (
     Dict,
     List,
@@ -10,37 +11,53 @@ from typing import (
     AsyncIterable,
 )
 
-
 from btseauth_spot import BTSE_Endpoint, make_headers
-# works on testnet
 from utils import is_json
+
+pp = pprint.PrettyPrinter(indent=4)
+open_order_params = {'symbol': 'BTC-USDT'}
+path = '/api/v3.2/user/open_orders'
+url = BTSE_Endpoint+path
 
 # method to check if orderID = dac5fa04-e419-4054-8fc3-1ed922d595c1 is still an openorder
 def get_active_order(id, trade_msg: Dict[str, Any]):
     for open_trade in trade_msg:
         if open_trade['orderID'] == id:
             return open_trade
-        
 
-pp = pprint.PrettyPrinter(indent=4)
-## Get Open Orders
-open_order_params = {'symbol': 'BTC-USD'}
+def get_openorders_r():
+    # get open orders using requests
+    r = requests.get(
+        BTSE_Endpoint+ path,
+        params=open_order_params,
+        headers=make_headers(path, '')
+    )
+    # all open orders 
+    print("\nAll open Orders:")
+    pp.pprint(r.json())
+    
 
-path = '/api/v3.2/user/open_orders'
-headers=make_headers(path, '')
-print("headers:")
-print(headers)
+async def get_openorders(url, params, headers):
+    client = aiohttp.ClientSession()
+    try:    
+        async with client.get(url, params=params, headers=headers) as response:
+            print(await response.text())
+            parsed = json.loads(await response.text())
+            print(f'\nParsed:\n {parsed}')
+    except Exception as e: 
+        print(e)
+    finally:
+        await client.close()
 
-r = requests.get(
-    BTSE_Endpoint+ path,
-    params=open_order_params,
-    headers=make_headers(path, '')
-)
-print("endpoint:")
-print (BTSE_Endpoint + path )
 
-#res = r.text
-#print(res)
+async def main():
+    headers = make_headers(path, '')
+    await get_openorders(url=url, params=open_order_params, headers=headers)
+
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
+
 
 ''' what was this used for? 
 try:
@@ -53,9 +70,6 @@ except IndexError as e:
     print(r.text)
 '''
 
-# all open orders 
-print("\nAll open Orders:")
-pp.pprint(r.json())
 
 # get just this one open order
 '''

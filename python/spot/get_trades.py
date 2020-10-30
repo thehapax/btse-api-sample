@@ -8,20 +8,17 @@ from decimal import Decimal
 
 pp = pprint.PrettyPrinter(indent=4)
 
+BTSE_Endpoint = 'https://testapi.btse.io/spot'
 headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
-
 path = '/api/v3.2/trades'
-
-# params = {}
-params={'symbol': 'BTC-USD'}
-
+params={'symbol': 'BTC-USDT'}
 r = requests.get(BTSE_Endpoint+path,
                 params=params,
-                headers = headers)
-
+                headers=headers)
 print(r.text)
+
 print("\n")
 #print(r.json())
 

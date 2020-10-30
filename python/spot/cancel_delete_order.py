@@ -1,29 +1,83 @@
-import socket
-import requests
 import json
-
+import aiohttp
+import asyncio
+import requests
 from btseauth_spot import make_headers, BTSE_Endpoint
 
-# works on testnet
 
-#  "clOrderID": "MYOWNORDERID"
-## Delete an order
-cancel_params = {'orderID': 'dac5fa04-e419-4054-8fc3-1ed922d595c1', 
-                 'symbol': 'BTC-USD'}
+async def del_order(url, params, headers):
+    client = aiohttp.ClientSession()
+    try:    
+        async with client.delete(url, params=params, headers=headers) as response:
+            print(await response.text())
+            parsed = json.loads(await response.text())
+            print(f'\nParsed:\n {parsed}')
+    except Exception as e: 
+        print(e)
+    finally:
+        await client.close()
 
-#cancel_params = {'clOrderID': 'MYOWNORDERID', 
-#                 'symbol': 'BTC-USD'}
+async def main():
+    #   'clOrderID': 'MYOWNORDERID2',
+    cancel_params = {
+        #'orderID': '63763850-adca-43b6-a642-7912c7ddebaf',
+                     'clOrderID': 'MYOWNORDERID2',
+                    'symbol': 'BTC-USDT'}
+    path = '/api/v3.2/order'
+    url = BTSE_Endpoint+path
+    headers = make_headers(path, '')
+    await del_order(url=url, params=cancel_params, headers=headers)
 
 
-path = '/api/v3.1/order'
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
+
+'''
+sample response:
+ {'code': -7006, 'msg': None, 'time': 1604037663859, 'data': None}
+ 
+ valid cancel:
+  [{'status': 6, 
+  'symbol': 'BTC-USDT', 
+  'orderType': 76, 
+  'price': 7050.0, 
+  'side': 'BUY', 
+  'size': 0.002, 
+  'orderID': '26ae2091-c0a5-4ef2-8874-ae614876fb38', 
+  'timestamp': 1604039550682, 
+  'triggerPrice': 0.0, 
+  'stopPrice': None, 
+  'trigger': False, 
+  'message': ''}]
+
+# original REST API
 r = requests.delete(
     BTSE_Endpoint+ path,
     params=cancel_params,
-    headers=make_headers(path, '')
+    headers=headers
 )
-print (BTSE_Endpoint + path )
+
+print(BTSE_Endpoint + path)
+print(cancel_params)
 print(r.text)
-print(r.json())
+'''
+
+
+#client = await self._http_client()
+# works on testnet
+#print(r.json())
+
+# "clOrderID": "MYOWNORDERID"
+# Delete an order
+# cancel_params = {'orderID': 'dac5fa04-e419-4054-8fc3-1ed922d595c1', 
+#                 'symbol': 'BTC-USD'}
+
+# cancel_params = {'clOrderID': 'MYOWNORDERID', 
+#                   'symbol': 'BTC-USD'}
+
+
+
+
 
 '''
 response:

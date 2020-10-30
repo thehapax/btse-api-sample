@@ -1,6 +1,8 @@
 import socket
 import requests
 import json
+import aiohttp
+import asyncio
 
 from btseauth_spot import make_headers, BTSE_Endpoint
 
@@ -19,22 +21,90 @@ from btseauth_spot import make_headers, BTSE_Endpoint
 mkt_order_form = {
 #  "price": 7000,
   "side": "BUY",
-  "size": 0.002,
+  "size": "0.002",
   "symbol": "ETH-USDT",
   "txType": "LIMIT",
   "type": "MARKET"
 }
 
 path = '/api/v3.1/order'
-r = requests.post(
-    BTSE_Endpoint+path,
-    json=mkt_order_form,
-    headers=make_headers(path, json.dumps(mkt_order_form))
-)
-print(r.text)
+url = BTSE_Endpoint+path
+headers = make_headers(path, json.dumps(mkt_order_form))
+
+def place_mkt_order():
+    r = requests.post(url,
+                      json=mkt_order_form,
+                      headers=headers)
+    print(r.text)
+
+
+async def market_order(url, params, headers):
+    client = aiohttp.ClientSession()
+    try:
+        response = await client.post(url, json=params, headers=headers)
+        r = await response.text()
+        print("RESPONSE from client: " + r + "\n")
+    except Exception as e:
+        print(e)
+    finally:
+        await client.close()
+
+
+async def main():
+    res = await market_order(url, params=mkt_order_form,  headers=headers)
+
+
+
+if __name__ == "__main__":
+    print("===========\n\n")
+    place_mkt_order()
+    print("\n")
+    
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
+
 
 '''
-response from requests: 
+1: MARKET_UNAVAILABLE = Futures market is unavailable
+4: ORDER_FULLY_TRANSACTED = Order is fully transacted
+5: ORDER_PARTIALLY_TRANSACTED = Order is partially transacted
+6: ORDER_CANCELLED = Order is cancelled successfully
+8: INSUFFICIENT_BALANCE = Insufficient balance in account
+15: ORDER_REJECTED = Order is rejected
+16: ORDER_NOTFOUND = Order is not found with the order ID or clOrderID provided 
+
+
+sample response: 
+
+[{"status":15,
+"symbol":"BTC-null",
+"orderType":0,
+"price":0.0,
+"side":"SELL",
+"size":0.0,
+"orderID":"b2e55bef-495f-4870-97d7-e13d965d979a",
+"timestamp":1604025860584,
+"triggerPrice":0.0,
+"stopPrice":null,
+"trigger":false,
+"message":""}]
+
+
+sample:
+[{"status":5,
+"symbol":"ETH-USDT",
+"orderType":77,
+"price":405.8198,
+"side":"BUY",
+"size":0.8116396,
+"orderID":"0d68f00b-db4a-4357-9079-0ceea68fedf8",
+"timestamp":1604034921121,
+"triggerPrice":0.0,
+"stopPrice":null,
+"trigger":false,
+"message":""}]
+
+sample response from requests: 
 
 [{"status":4,
 "symbol":"BTC-USD",

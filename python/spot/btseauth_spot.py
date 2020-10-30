@@ -57,6 +57,7 @@ def make_headers(path, data):
         'Accept': 'application/json;charset=UTF-8',
         'Content-Type': 'application/json',
     }
+    print(headers)
     return headers
 
 def gen_auth(api_key, secret_key, path='/spotWS'):

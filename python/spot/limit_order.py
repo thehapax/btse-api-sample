@@ -13,7 +13,7 @@ limit_order_form = {
   "price": 7050,
   "side": "BUY",
   "size": 0.002,
-  "symbol": "BTC-USD",
+  "symbol": "BTC-USDT",
   "time_in_force": "GTC",
   "triggerPrice": 0,
   "txType": "LIMIT",

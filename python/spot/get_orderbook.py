@@ -19,7 +19,7 @@ trades = 'https://api.btse.com/spot/api/v3.2/trades'
 # does not require symbol
 epoch_time = 'https://api.btse.com/spot/api/v3.2/time'
 pp = pprint.PrettyPrinter(indent=4)
-symbol = 'BTC-USD'
+symbol = 'BTC-USDT'
 
 headers = {
   'Accept': 'application/json;charset=UTF-8'
@@ -30,7 +30,7 @@ def get_main():
                      params={}, 
                      headers= headers)
     print(type(r))
-    print(r.json())
+    print(r.text)
     return r.json()
 
 def get_market(symbol):
@@ -108,15 +108,16 @@ def get_orderbook_data(result): # use L2 orderbook with timestamp
     
 
 if __name__ == "__main__":
-    r = get_main()
-    #result = get_market(symbol)
+    #r = get_main()
+    
+    result = get_market(symbol)
     '''
     ohlcv = get_ohlcv(symbol) # this is broken on the BTSE Api side
     '''
     
 #    result = get_epochtime()
  
-#    result = get_l1(symbol)
+    result = get_l1(symbol)
 #    result = get_price(symbol)
 #    result = get_trades(symbol)
 #    get_orderbook_data(result)

@@ -14,11 +14,14 @@ headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
 
-#params = {'symbol': 'ETH-USD'}
+#params = {'symbol': 'ETH-USDT'}
 params = {'symbol': 'BTC-USDT'}
+BTSE_Endpoint = 'https://testapi.btse.io/spot'
 
 r = requests.get(BTSE_Endpoint+'/api/v3.2/market_summary', params=params, headers = headers)
 #res = r.json()[0]
+
+
 
 '''
 print("----")

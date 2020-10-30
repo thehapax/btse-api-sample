@@ -19,8 +19,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 def subscription_payload():
     # notificationApi is private data
-    payload = {'op': 'subscribe',
-                'args': ['notificationApiV1']}
+    payload = {'op': 'subscribe', 'args': ['notificationApiV1']}
 
     print("sending subscription V1 payload")
     return payload
@@ -29,7 +28,7 @@ def orderbook_payload():
     # Order book subscription, 5 levels, public data
     payload = {
         "op":"subscribe",
-        "args":["orderBookApi:BTC-USD_5"] # up to 150 entries
+        "args":["orderBookL2Api:BTC-USD_5"] # up to 150 entries
     }
     print("sending order book btc-usd-5 payload")
     return payload
@@ -63,6 +62,7 @@ def get_auth_responses(response):
     for k,v in lookup.items():
         if k in response:
             rdict = {"topic":"auth", "message": str(response), "info": str(v)} 
+            #print(rdict)
             return ujson.dumps(rdict)
 
 async def connect_forever():
@@ -77,19 +77,35 @@ async def connect_forever():
         await websocket.send(auth_payload)
         
         # Subscription - order notifications
-        payload1 = subscription_payload()
-        payload2 = orderbook_payload()
-        payload3 = tradehistory_payload()
-        #await websocket.send(ujson.dumps(payload1))
-        #await websocket.send(ujson.dumps(payload2))
-        await websocket.send(ujson.dumps(payload3))
-                 
+        user_payload = subscription_payload()
+        ob_payload = orderbook_payload()
+#        trade_payload = tradehistory_payload()
+        await websocket.send(ujson.dumps(user_payload))
+        await websocket.send(ujson.dumps(ob_payload))
+#        await websocket.send(ujson.dumps(trade_payload))
+
         MESSAGE_TIMEOUT = 30.0
 
         while True:
             try:
                 response: Dict[Any] = await asyncio.wait_for(websocket.recv(), timeout=MESSAGE_TIMEOUT)
                 print("\n======= WEBSOCKET DATA RECEIVED: ======= \n")
+                print(response)
+                code = get_auth_responses(response)
+                print(code)
+                
+                if 'topic' in response:
+                    print(type(response))
+                    r = ujson.loads(str(response))
+                    topic = r['topic']
+                    print(f'topic: {topic}')
+                    
+#                    data = r['data'][0]
+#                    print(data)
+#                    status = data['status']
+#                    print(f'status: {status}')
+                
+                '''
                 if "topic" in response:
                     r = ujson.loads(str(response))
                     if "orderBookApi" in r['topic']:
@@ -102,11 +118,16 @@ async def connect_forever():
                         for trade in r["data"]:
                             trade: Dict[Any] = trade
                             print(trade)
+                    elif "notificationsApi" in r['topic']:
+                        print("notifications")
+                        data = r['data']
+                        pp.pprint('data')
                 else:
                     print("No topic in response")
                     code = get_auth_responses(response)
                     print(type(code))
                     print(code)
+                '''
             except Exception as e:
                 print(e)
 

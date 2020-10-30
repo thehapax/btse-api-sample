@@ -8,3 +8,10 @@ btse_fees
 fixtures
 btse_fees.py
 fixtures.py
+fixture.py
+sample_async.py
+cython
+cython*
+.DS_Store
+aiotests
+env

@@ -5,7 +5,6 @@ from btseauth_spot import make_headers, BTSE_Endpoint
 import pprint
 from decimal import Decimal
 
-
 pp = pprint.PrettyPrinter(indent=4)
 #path = '/api/v2/user/wallet_history'
 
@@ -15,6 +14,7 @@ btse_test_url ='https://testapi.btse.io/spot/api/v3.2/user/wallet'
 # params ={}
 params = {'currency': 'BTC'} 
 # params don't work, all balances are returned. 
+# await self._api_request("get", "price?symbol=BTC-USDT")
 
 headers=make_headers(path, '')
 
@@ -23,7 +23,8 @@ r = requests.get(
     params=params,
     headers=headers)
 
-#print(str(r))
+print(str(r))
+print(str(r.text))
 
 response = r.json()
 #pp.pprint(response)
