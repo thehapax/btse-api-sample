@@ -4,6 +4,7 @@ import json
 import aiohttp
 import asyncio
 
+from utils import get_status_msg
 from btseauth_spot import make_headers, BTSE_Endpoint
 
 # works on testnet
@@ -29,9 +30,9 @@ mkt_order_form = {
 
 path = '/api/v3.1/order'
 url = BTSE_Endpoint+path
-headers = make_headers(path, json.dumps(mkt_order_form))
 
-def place_mkt_order():
+def place_mkt_order(mkt_order_form):
+    headers = make_headers(path, json.dumps(mkt_order_form))
     r = requests.post(url,
                       json=mkt_order_form,
                       headers=headers)
@@ -44,21 +45,28 @@ async def market_order(url, params, headers):
         response = await client.post(url, json=params, headers=headers)
         r = await response.text()
         print("RESPONSE from client: " + r + "\n")
+        parsed = json.loads(await response.text())
+        print(f'\nParsed:\n {parsed}')
+        if type(parsed) == list:
+            code = parsed[0]['status']
+            msg = get_status_msg(code)
+            print(f'\nLimit Order Status Message: {msg}')
+        else:   # error dict returned, get actual error message and return
+            msg = parsed['message']
     except Exception as e:
         print(e)
     finally:
         await client.close()
 
-
 async def main():
+    headers = make_headers(path, json.dumps(mkt_order_form))
     res = await market_order(url, params=mkt_order_form,  headers=headers)
 
 
-
 if __name__ == "__main__":
-    print("===========\n\n")
-    place_mkt_order()
-    print("\n")
+#    print("===========\n\n")
+#    place_mkt_order(mkt_order_form)
+#    print("\n")
     
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
@@ -73,9 +81,7 @@ if __name__ == "__main__":
 15: ORDER_REJECTED = Order is rejected
 16: ORDER_NOTFOUND = Order is not found with the order ID or clOrderID provided 
 
-
-sample response: 
-
+sample response:
 [{"status":15,
 "symbol":"BTC-null",
 "orderType":0,
@@ -88,7 +94,6 @@ sample response:
 "stopPrice":null,
 "trigger":false,
 "message":""}]
-
 
 sample:
 [{"status":5,
@@ -105,7 +110,6 @@ sample:
 "message":""}]
 
 sample response from requests: 
-
 [{"status":4,
 "symbol":"BTC-USD",
 "orderType":77,
@@ -123,5 +127,4 @@ sample response from requests:
 "clOrderID":"",
 "stealth":1.0,
 "deviation":1.0}]
-
 '''

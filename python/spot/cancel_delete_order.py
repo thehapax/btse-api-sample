@@ -3,6 +3,7 @@ import aiohttp
 import asyncio
 import requests
 from btseauth_spot import make_headers, BTSE_Endpoint
+from utils import get_status_msg
 
 
 async def del_order(url, params, headers):
@@ -12,6 +13,13 @@ async def del_order(url, params, headers):
             print(await response.text())
             parsed = json.loads(await response.text())
             print(f'\nParsed:\n {parsed}')
+            if type(parsed) == list:
+                code = parsed[0]['status']
+                msg = get_status_msg(code)
+                print(f'Status Message: {msg}')
+            else:   # error dict returned, get actual error message and return
+                msg = parsed['message']
+            return msg
     except Exception as e: 
         print(e)
     finally:
@@ -26,8 +34,8 @@ async def main():
     path = '/api/v3.2/order'
     url = BTSE_Endpoint+path
     headers = make_headers(path, '')
-    await del_order(url=url, params=cancel_params, headers=headers)
-
+    msg = await del_order(url=url, params=cancel_params, headers=headers)
+    print(f'Returned message: {msg}')
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
@@ -63,9 +71,9 @@ print(r.text)
 '''
 
 
-#client = await self._http_client()
+# client = await self._http_client()
 # works on testnet
-#print(r.json())
+# print(r.json())
 
 # "clOrderID": "MYOWNORDERID"
 # Delete an order
