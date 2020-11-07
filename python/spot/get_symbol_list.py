@@ -7,8 +7,9 @@ import json
 from decimal import Decimal
 import math
 
+# https://testapi.btse.io/spot/api/v3.2/market_summary
 
-#BTSE_Endpoint = 'https://testapi.btse.io/spot'
+BTSE_Endpoint = 'https://testapi.btse.io/spot'
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -28,9 +29,9 @@ for rule in res:
     entry['symbol'] = trading_pair
     entry['price_step'] = price_step
     entry['quantity_step'] = quantity_step
-#    print(entry)
+    print(f'\n{entry}')
     
-    print("\nPrice Step: ")
+    print("Price Step: ")
     print(price_step)
     price_decimals = Decimal(str(price_step))
     price_step2 = Decimal("1") / Decimal(str(math.pow(10, price_decimals)))

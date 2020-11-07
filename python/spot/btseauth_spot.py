@@ -1,8 +1,10 @@
+import hashlib
 import hmac
 import time
-import hashlib
-import os 
-
+import os
+from typing import (
+    Dict,
+)
 # works on testnet and production
 
 #Production
@@ -37,19 +39,21 @@ print(keypair)
 
 
 ##Make Signature headers
-def make_headers(path, data):
+def make_headers(path: str, data: str="") -> Dict[str, any]:
     nonce = str(int(time.time()*1000))
-#    nonce = str(int(time.time()))
     print("nonce:" + nonce)
     message = path + nonce + data
-
+    print(f'message: {message}')
     headers = {}
+    passph = keypair['API-PASSPHRASE']
+    print(f'api-pass: {passph}')
     
     signature = hmac.new(
         bytes(keypair['API-PASSPHRASE'], 'latin-1'),
         msg=bytes(message, 'latin-1'),
         digestmod=hashlib.sha384
     ).hexdigest()
+    
     headers = {
         'btse-api':keypair['API-KEY'],
         'btse-nonce':nonce,

@@ -26,11 +26,11 @@ async def del_order(url, params, headers):
         await client.close()
 
 async def main():
-    #   'clOrderID': 'MYOWNORDERID2',
-    cancel_params = {
-        #'orderID': '63763850-adca-43b6-a642-7912c7ddebaf',
-                     'clOrderID': 'MYOWNORDERID2',
-                    'symbol': 'BTC-USDT'}
+#    cancel_params = {'clOrderID': 'MYOWNORDERID2',
+#                     'symbol': 'BTC-USDT'}
+    cancel_params = {'orderID': 'b83baf19-7ebe-4997-bfc1-648b06985ad4',
+                     'symbol': 'ETH-USDT'}
+
     path = '/api/v3.2/order'
     url = BTSE_Endpoint+path
     headers = make_headers(path, '')

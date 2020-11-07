@@ -5,22 +5,17 @@ import asyncio
 import pprint 
 from typing import (
     Dict,
-    List,
-    Optional,
-    Any,
-    AsyncIterable,
 )
-
 from btseauth_spot import BTSE_Endpoint, make_headers
 from utils import is_json
 
 pp = pprint.PrettyPrinter(indent=4)
-open_order_params = {'symbol': 'BTC-USDT'}
+open_order_params = {'symbol': 'ETH-USDT'}
 path = '/api/v3.2/user/open_orders'
 url = BTSE_Endpoint+path
 
 # method to check if orderID = dac5fa04-e419-4054-8fc3-1ed922d595c1 is still an openorder
-def get_active_order(id, trade_msg: Dict[str, Any]):
+def get_active_order(id, trade_msg: Dict[str, any]):
     for open_trade in trade_msg:
         if open_trade['orderID'] == id:
             return open_trade
@@ -41,9 +36,11 @@ async def get_openorders(url, params, headers):
     client = aiohttp.ClientSession()
     try:    
         async with client.get(url, params=params, headers=headers) as response:
-            print(await response.text())
-            parsed = json.loads(await response.text())
-            print(f'\nParsed:\n {parsed}')
+            # print(await response.text())
+            result = await response.text()
+            parsed = json.loads(result)
+            pp.pprint("\nParsed:")
+            pp.pprint(parsed)
     except Exception as e: 
         print(e)
     finally:
@@ -52,6 +49,7 @@ async def get_openorders(url, params, headers):
 
 async def main():
     headers = make_headers(path, '')
+    print(f'PARAMS: {open_order_params}\n')
     await get_openorders(url=url, params=open_order_params, headers=headers)
 
 

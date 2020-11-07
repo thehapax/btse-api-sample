@@ -28,9 +28,9 @@ def orderbook_payload():
     # Order book subscription, 5 levels, public data
     payload = {
         "op":"subscribe",
-        "args":["orderBookL2Api:BTC-USD_5"] # up to 150 entries
+        "args":["orderBookL2Api:ETH-USDT_5"] # up to 150 entries
     }
-    print("sending order book btc-usd-5 payload")
+    print("sending order book eth-usdt-5 payload")
     return payload
 
 def tradehistory_payload():
@@ -38,7 +38,7 @@ def tradehistory_payload():
     # tradehistory is public data
     payload = {
         "op":"subscribe",
-        "args":["tradeHistoryApi:BTC-USD"]
+        "args":["tradeHistoryApi:ETH-USDT"]
     }
     return payload
 

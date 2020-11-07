@@ -21,8 +21,8 @@ from btseauth_spot import make_headers, BTSE_Endpoint
 ## Place a market order
 mkt_order_form = {
 #  "price": 7000,
-  "side": "BUY",
-  "size": "0.002",
+  "side": "SELL",
+  "size": "0.01",
   "symbol": "ETH-USDT",
   "txType": "LIMIT",
   "type": "MARKET"
