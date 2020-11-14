@@ -91,8 +91,8 @@ async def run(r):
 
         task2 = asyncio.ensure_future(limit_order(client=session, path=limit_path, params=limit_order_form))
         tasks.append(task2)
-#        task3 = asyncio.ensure_future(limit_order(client=session, path=limit_path, params=limit_order_form))
-#        tasks.append(task3)
+#       task3 = asyncio.ensure_future(limit_order(client=session, path=limit_path, params=limit_order_form))
+#       tasks.append(task3)
 
         responses = await asyncio.gather(*tasks)
         print(f'length of responses: {len(responses)} \n\n')
@@ -126,14 +126,13 @@ future = asyncio.ensure_future(run(2))
 loop.run_until_complete(future)
 
 
-#get_openorders: https://testapi.btse.io/spot/api/v3.2/user/open_orders 
+# get_openorders: https://testapi.btse.io/spot/api/v3.2/user/open_orders 
 
 
 '''
     async def fetch(url, session):
         async with session.get(url) as response:
             return await response.read()
-
 
     url = "http://example.org/{}"
     tasks = []
@@ -153,6 +152,4 @@ loop.run_until_complete(future)
 def print_responses(result):
     print(result)
 '''
-
-
 

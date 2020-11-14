@@ -82,7 +82,7 @@ class BtseEx():
         return data
     '''
     
-    async def _close_http(self):
+    async def close_http(self):
         client = await self._http_client()
         await client.close()
         
@@ -105,6 +105,7 @@ class BtseEx():
                 print(f"\n INSIDE CLIENT.GET: url: {url} params: {params}\n")
                 async with client.get(url, params=params, headers=headers) as response:
                     result = await response.text()
+                    print(f"\n GET response: {result}")
                     
             elif method == "post":
                 jsond= json.dumps(params)
@@ -113,16 +114,18 @@ class BtseEx():
                 # tricky - post uses json=params, header uses json.dumps(params)
                 async with client.post(url, json=params, headers=headers) as response:
                     result = await response.text()
-                    print(f"\nparsed_response: {result}")
+                    print(f"\n POST response: {result}")
                     
             elif method == "delete":
                 print(f"\n INSIDE DELETE order. {url}, params: {params}, headers: {headers}\n")
                 async with client.delete(url, params=params, headers=headers) as response:
                     result = await response.text()
+                    print(f"\n DELETE response: {result}")
+
             else:
                 raise NotImplementedError
             
-            print(f'Result : {result}\n')
+            # print(f'Result : {result}\n')
             parsed_response = json.loads(result)
             
         except Exception as e:
@@ -134,30 +137,26 @@ class BtseEx():
         #print(f"RESPONSE: {parsed_response}")
         return parsed_response
             
-            
 
-    async def open_orders(self, params):
+    async def open_orders(self, path, params):
         '''
         Specifying which symbols are required or else 400 error will be thrown 
         can also use params as passed in by paramter
         '''
-        open_path = 'user/open_orders'
-        open_order_params = {'symbol': 'ETH-USDT'}
-        print(f" Inside open_orders in access_methods\n params: {open_order_params}, path: {open_path}")
-        result = await self._api_request(method='get', path=open_path, params=open_order_params)
-        print("\n Open order result:")
-        print(result)
-        await self._close_http()
+        result = await self._api_request(method='get', path=path, params=params)
+        # await self.close_http()
         return result
-
 
     async def limit_order(self, path, params):
         result = await self._api_request(method='post', path=path, params=params)
-        print("\n Limit order result:")
-        print(result)
-        await self._close_http()
+        # await self.close_http()
         return result
         
+    async def delete_order(self, path, params):
+        result = await self._api_request(method='delete', path=path, params=params)
+        # await self.close_http()
+        return result
+
 
     '''
     async def limit_order(self, url, params, headers):
@@ -180,6 +179,7 @@ class BtseEx():
             await client.close()
     '''
 
+    # old version
     async def del_order(self, url, params, headers):
         client = await self._http_client()
         try:

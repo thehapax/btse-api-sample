@@ -10,9 +10,9 @@ from access_methods import BtseEx # get_openorders, limit_order, del_order
 from decimal import Decimal
 from async_utils import safe_gather
 
-
 pp = pprint.PrettyPrinter(indent=4)
 
+########################################
 price = 457.1500000000000253769227854
 price = Decimal('%.7g' % price)
 limit_order_form = {"symbol": "ETH-USDT", "side": "BUY", "type": "LIMIT",
@@ -22,13 +22,23 @@ limit_order_form = {"symbol": "ETH-USDT", "side": "BUY", "type": "LIMIT",
                      "txType": "LIMIT", "clOrderID": "buy-ETH-USDT-1604374232705551"}
 limit_path = 'order'
 open_order_params = {'symbol': 'ETH-USDT'}
+open_path = 'user/open_orders'
 
+cancel_path = 'order'
+cancel_params = {'orderID':'49145e7e-d98c-4a9c-b73f-e1ff446dd930',
+                 'symbol':'ETH-USDT'}
+
+#        open_path = 'user/open_orders'
+#        open_order_params = {'symbol': 'ETH-USDT'}
+#        print(f" Inside open_orders in access_methods\n params: {open_order_params}, path: {open_path}")
 
 async def main():
     try:
         be = BtseEx()
-        #await be.open_orders(open_order_params)
-        await be.limit_order(path=limit_path, params=limit_order_form)
+        order_result = await be.open_orders(path=open_path, params=open_order_params)
+        limit_result = await be.limit_order(path=limit_path, params=limit_order_form)
+        delete_result = await be.delete_order(path=cancel_path, params=cancel_params)
+        await be.close_http()
     except Exception as e:
         print(e)    
 
