@@ -34,19 +34,19 @@ keypair = {
     'API-PASSPHRASE': api_pass
 }
 
-print("Keypair:")
-print(keypair)
+#print("Keypair:")
+#print(keypair)
 
 
 ##Make Signature headers
 def make_headers(path: str, data: str="") -> Dict[str, any]:
     nonce = str(int(time.time()*1000))
-    print("nonce:" + nonce)
+    #print("nonce:" + nonce)
     message = path + nonce + data
-    print(f'message: {message}')
+    #print(f'message: {message}')
     headers = {}
     passph = keypair['API-PASSPHRASE']
-    print(f'api-pass: {passph}')
+    #print(f'api-pass: {passph}')
     
     signature = hmac.new(
         bytes(keypair['API-PASSPHRASE'], 'latin-1'),
@@ -61,7 +61,7 @@ def make_headers(path: str, data: str="") -> Dict[str, any]:
         'Accept': 'application/json;charset=UTF-8',
         'Content-Type': 'application/json',
     }
-    print(headers)
+#    print(headers)
     return headers
 
 def gen_auth(api_key, secret_key, path='/spotWS'):

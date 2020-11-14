@@ -8,7 +8,7 @@ from utils import get_status_msg
 
 async def del_order(url, params, headers):
     client = aiohttp.ClientSession()
-    try:    
+    try:
         async with client.delete(url, params=params, headers=headers) as response:
             print(await response.text())
             parsed = json.loads(await response.text())

@@ -20,6 +20,26 @@ def get_active_order(id, trade_msg: Dict[str, any]):
         if open_trade['orderID'] == id:
             return open_trade
 
+def get_all_order_ids(trade_msg: Dict[str, any]):
+    ids = []
+    client_ids = []
+    for trade in trade_msg:
+        id = trade['orderID']
+        ids.append(id)
+        cid = trade['clOrderID']
+        client_ids.append(cid)
+    return ids, client_ids
+
+# use these dicts for deletion of open orders
+def get_cancelparams(trade_msg: Dict[str, any]): 
+    pairs = []
+    for trade in trade_msg:
+        symbol = trade['symbol']
+        oid = trade['orderID']
+        info = {'symbol': symbol, 'orderID': oid}
+        pairs.append(info)
+    return pairs
+
 def get_openorders_r():
     # get open orders using requests
     r = requests.get(
@@ -30,31 +50,71 @@ def get_openorders_r():
     # all open orders 
     print("\nAll open Orders:")
     pp.pprint(r.json())
-    
 
-async def get_openorders(url, params, headers):
-    client = aiohttp.ClientSession()
-    try:    
-        async with client.get(url, params=params, headers=headers) as response:
-            # print(await response.text())
-            result = await response.text()
-            parsed = json.loads(result)
-            pp.pprint("\nParsed:")
-            pp.pprint(parsed)
+
+async def get_openorders(client, url, params):
+    try:
+        path = '/api/v3.2/user/open_orders'
+        headers = make_headers(path, '')
+        async with client.request('get', url=url, params=params, headers=headers) as response:
+            result = await response.json()
+            # print(result)
+            return result
     except Exception as e: 
         print(e)
-    finally:
-        await client.close()
-
 
 async def main():
-    headers = make_headers(path, '')
-    print(f'PARAMS: {open_order_params}\n')
-    await get_openorders(url=url, params=open_order_params, headers=headers)
+    # this causes 'FORBIDDEN: Signature is incorrect'
+    #    headers = make_headers(path, json.dumps(open_order_params))
+    # ----- 
+    # this causes TypeError: can only concatenate str (not "dict") to str
+    #    headers = make_headers(path, open_order_params)
 
+    print(f'PARAMS: {open_order_params}\n') 
+    #client = aiohttp.ClientSession()
+
+    async with aiohttp.ClientSession() as session:
+        response = await get_openorders(client=session, url=url, params=open_order_params)
+        print("\n")
+        pairs = get_cancelparams(response)
+        print(f'Total number of pairs: {len(pairs)}\n\n')
+        print(pairs)
+        await session.close()
+
+#loop = asyncio.get_event_loop()
+#loop.run_until_complete(main())
+    
+
+async def allinone():
+    try:
+        path = '/api/v3.2/user/open_orders'
+        headers = make_headers(path, '')
+        params = {'symbol': 'ETH-USDT'}
+        async with aiohttp.ClientSession() as client:
+            async with client.request('get', url=url, params=params, headers=headers) as response:
+                result = await response.json()
+                print(result)
+        await client.close()   
+    except Exception as e: 
+        print(e)
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+loop.run_until_complete(allinone())
+
+
+
+
+
+
+# order_ids, client_ids = get_all_order_ids(response)
+# print(f'Order IDs: {order_ids} \n\nClient IDs: {client_ids}\n')
+
+
+#        async with client.get(url, params=params, headers=headers) as response:
+            # print(await response.text())
+#            parsed = json.loads(result)
+#            pp.pprint("\nParsed:")
+#            pp.pprint(parsed)
 
 
 ''' what was this used for? 

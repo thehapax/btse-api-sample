@@ -55,7 +55,8 @@ path = '/api/v3.2/order'
 url = BTSE_Endpoint+path
 
 # requests example
-def limit_order(order_form):
+'''
+def limit_order_r(order_form):
   r = requests.post(
       url,
       json=order_form,
@@ -63,22 +64,30 @@ def limit_order(order_form):
   )
   print(r.text)
   return r.text
+'''
+
+def get_parsed(parsed):
+  print(f'\nParsed:\n {parsed}')
+  msg = None
+  if type(parsed) == list:
+      code = parsed[0]['status']
+      msg = get_status_msg(code)
+      print(f'\nLimit Order Status Message: {msg}')
+  else:   # error dict returned, get actual error message and return
+      msg = parsed['message']
+  return msg
+
+ #  print("RESPONSE from client: " + r + "\n")
 
 # asyncio example
 async def limit_order(url, params, headers):
     client = aiohttp.ClientSession()
     try:
-        response = await client.post(url, json=params, headers=headers)
-        r = await response.text()
-        print("RESPONSE from client: " + r + "\n")
-        parsed = json.loads(await response.text())
-        print(f'\nParsed:\n {parsed}')
-        if type(parsed) == list:
-            code = parsed[0]['status']
-            msg = get_status_msg(code)
-            print(f'\nLimit Order Status Message: {msg}')
-        else:   # error dict returned, get actual error message and return
-            msg = parsed['message']
+      async with client.request('post', url=url, json=params, headers=headers) as response:
+        r = await response.json()
+        parsed = get_parsed(r)
+        print(parsed)
+        return r
     except Exception as e:
         print(e)
     finally:
@@ -87,14 +96,12 @@ async def limit_order(url, params, headers):
 
 async def main():
   print(f'FULL URL: {url}')
-  
   headers=make_headers(path, json.dumps(limit_order_form))
   res = await limit_order(url, params=limit_order_form, headers=headers)
 
 
 if __name__ == '__main__':
-#    limit_order(limit_order_form)
-
+    # limit_order(limit_order_form) # requests version
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
 
