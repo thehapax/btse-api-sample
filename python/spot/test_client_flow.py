@@ -28,9 +28,6 @@ cancel_path = 'order'
 cancel_params = {'orderID':'49145e7e-d98c-4a9c-b73f-e1ff446dd930',
                  'symbol':'ETH-USDT'}
 
-#        open_path = 'user/open_orders'
-#        open_order_params = {'symbol': 'ETH-USDT'}
-#        print(f" Inside open_orders in access_methods\n params: {open_order_params}, path: {open_path}")
 
 async def main():
     try:
