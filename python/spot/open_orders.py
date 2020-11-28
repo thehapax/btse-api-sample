@@ -10,7 +10,8 @@ from btseauth_spot import BTSE_Endpoint, make_headers
 from utils import is_json
 
 pp = pprint.PrettyPrinter(indent=4)
-open_order_params = {'symbol': 'ETH-USDT'}
+#open_order_params = {'symbol': 'ETH-USDT'}
+open_order_params = {'symbol': 'BTC-USDT'}
 path = '/api/v3.2/user/open_orders'
 url = BTSE_Endpoint+path
 
@@ -89,7 +90,8 @@ async def allinone():
     try:
         path = '/api/v3.2/user/open_orders'
         headers = make_headers(path, '')
-        params = {'symbol': 'ETH-USDT'}
+        params = open_order_params
+        print(params)
         async with aiohttp.ClientSession() as client:
             async with client.request('get', url=url, params=params, headers=headers) as response:
                 result = await response.json()
@@ -100,10 +102,6 @@ async def allinone():
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(allinone())
-
-
-
-
 
 
 # order_ids, client_ids = get_all_order_ids(response)

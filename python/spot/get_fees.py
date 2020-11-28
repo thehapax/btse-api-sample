@@ -6,8 +6,8 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 path = '/api/v3.2/user/fees'
-#params={'symbol': 'BTC-USD'}
-params={}
+params={'symbol': 'BTC-USD'}
+#params={}
 
 r = requests.get(BTSE_Endpoint+path,
                 params=params,

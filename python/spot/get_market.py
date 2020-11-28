@@ -14,14 +14,27 @@ headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
 
-#params = {'symbol': 'ETH-USDT'}
 params = {'symbol': 'BTC-USDT'}
+#params = {'symbol': 'ETH-USDT'}
 BTSE_Endpoint = 'https://testapi.btse.io/spot'
 
-r = requests.get(BTSE_Endpoint+'/api/v3.2/market_summary', params=params, headers = headers)
-#res = r.json()[0]
+print(f'params: {params}')
 
+def get_min_ordersize(r):
+      m = r.json()
+      jm = m[0]
+      #print(jm)
+      minsize = jm['minOrderSize']
+      print(f'min order size: {minsize}')
+      return minsize
 
+def get_market(params):
+  r = requests.get(BTSE_Endpoint+'/api/v3.2/market_summary', params=params, headers = headers)
+  return r
+
+mkt = get_market(params)
+print(mkt.json())
+minsize = get_min_ordersize(mkt)
 
 '''
 print("----")
@@ -36,8 +49,8 @@ print("minPriceIncrement: " + str(minPrice))
 print("minSizeIncrement: " + str(minSize))
 '''
 
-print("==========>>>>>>>>>>")
-pp.pprint(r.json())
+#print("==========>>>>>>>>>>")
+#pp.pprint(r.json())
 
 
 

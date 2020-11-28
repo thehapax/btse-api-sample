@@ -90,8 +90,11 @@ class BtseEx():
     async def _api_request(self,
                            method: str, 
                            path: str = None, 
-                           params: Optional[Dict[str, Any]] = None) -> Dict[str,Any]:
+                           params: Optional[Dict[str, Any]] = {},
+                           is_auth_required: bool = False) -> Dict[str, Any]:
         
+        if is_auth_required:
+            print("Auth is Required")
         prefix = '/api/v3.2/'
         path_url = prefix + path
         print(f'path url : {path_url}')
@@ -143,17 +146,27 @@ class BtseEx():
         Specifying which symbols are required or else 400 error will be thrown 
         can also use params as passed in by paramter
         '''
-        result = await self._api_request(method='get', path=path, params=params)
+        # can this work with "post" and no params to get all open orders?
+        result = await self._api_request(method='get', 
+                                         path=path, 
+                                         params=params,
+                                         is_auth_required=True)
         # await self.close_http()
         return result
 
     async def limit_order(self, path, params):
-        result = await self._api_request(method='post', path=path, params=params)
+        result = await self._api_request(method='post', 
+                                         path=path, 
+                                         params=params,
+                                         is_auth_required=True)
         # await self.close_http()
         return result
         
     async def delete_order(self, path, params):
-        result = await self._api_request(method='delete', path=path, params=params)
+        result = await self._api_request(method='delete', 
+                                         path=path, 
+                                         params=params,
+                                         is_auth_required=True)
         # await self.close_http()
         return result
 

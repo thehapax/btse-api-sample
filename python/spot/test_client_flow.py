@@ -13,7 +13,7 @@ from async_utils import safe_gather
 pp = pprint.PrettyPrinter(indent=4)
 
 ########################################
-price = 457.1500000000000253769227854
+price = 357.1500000000000253769227854
 price = Decimal('%.7g' % price)
 limit_order_form = {"symbol": "ETH-USDT", "side": "BUY", "type": "LIMIT",
                      "price": f"{price:f}", 

@@ -3,7 +3,7 @@ import json
 import aiohttp, asyncio
 from decimal import Decimal
 from utils import get_status_msg
-from btseauth_spot import BTSE_Endpoint, make_headers
+from btseauth_spot import BTSE_Endpoint, make_headers, get_tracking_nonce
 
 # this script works on testnet
 # uses REST api v3.1
@@ -41,7 +41,7 @@ limit_order_form = {"symbol": "ETH-USDT", "side": "SELL","type": "LIMIT",
                       "txType": "LIMIT", 
                       "clOrderID": "sell-ETH-USDT-1604374232705617"}
 
-price = 457.1500000000000253769227854
+price = 357.1500000000000253769227854
 price = Decimal('%.7g' % price)
 
 limit_order_form = {"symbol": "ETH-USDT", "side": "BUY", "type": "LIMIT",
@@ -49,6 +49,35 @@ limit_order_form = {"symbol": "ETH-USDT", "side": "BUY", "type": "LIMIT",
                      "size": "0.09800000000000000204003480775", 
                      "triggerPrice": 0, "time_in_force": "GTC", 
                      "txType": "LIMIT", "clOrderID": "buy-ETH-USDT-1604374232705551"}
+
+
+limit_order_form = {"symbol": "BTC-USDT", 
+                    "side": "BUY", 
+                    "type": "LIMIT", 
+                    "price": "18637.8",
+                    "size": "0.012", 
+                    "triggerPrice": 0,
+                    "time_in_force": "GTC", 
+                    "txType": "LIMIT", 
+                    "clOrderID": "buy-BTC-USDT-1606020895015706"}
+
+limit_order_form = {"symbol": "BTC-USDT", 
+                    "side": "BUY", 
+                    "type": "LIMIT", 
+                    "price": "18637.8",
+                    "size": "0.012" }
+
+r_bid_price = 17487.5
+r_amount = 0.012
+limit_order_form = {"symbol": "BTC-USDT",
+                    "side": "BUY",
+                    "type": "LIMIT",
+                    "price": f"{r_bid_price}",
+                    "size": f"{r_amount}",
+                    "triggerPrice": 0,
+                    "time_in_force": "GTC",
+                    "txType": "LIMIT",
+                    "clOrderID": "buy-BTC-USDT-1606020895015706"}
 
 
 path = '/api/v3.2/order'
@@ -95,7 +124,10 @@ async def limit_order(url, params, headers):
 
 
 async def main():
+  nonce = get_tracking_nonce()
+  print(f'nonce: {nonce}')
   print(f'FULL URL: {url}')
+  print(f'limit order form: {limit_order_form}')
   headers=make_headers(path, json.dumps(limit_order_form))
   res = await limit_order(url, params=limit_order_form, headers=headers)
 
