@@ -15,3 +15,4 @@ cython*
 .DS_Store
 aiotests
 env
+scratch

@@ -4,6 +4,16 @@
 #curl -X GET /api.btse.com/spot/api/v3.2/market_summary?symbol=string \
 #  -H 'Accept: application/json;charset=UTF-8'
 
+'''
+# sample from 11.28.2020
+
+[{'symbol': 'BTC-USDT', 'last': 17873.0, 'lowestAsk': 17867.0, 'highestBid': 17685.0, 'percentageChange': 6.000476701, 'volume': 177198.857630865, 'high24Hr': 17873.003114639, 'low24Hr': 16861.247864965, 'base': 'BTC', 'quote': 'USDT', 'active': True, 'size': 10.249, 'minValidPrice': 0.5, 'minPriceIncrement': 0.5, 'minOrderSize': 0.001, 'maxOrderSize': 2000.0, 'minSizeIncrement': 0.001, 'openInterest': 0.0, 'openInterestUSD': 0.0, 'contractStart': 0, 'contractEnd': 0, 'timeBasedContract': False, 'openTime': 0, 'closeTime': 0, 'startMatching': 0, 'inactiveTime': 0, 'fundingRate': 0.0, 'contractSize': 0.0, 'maxPosition': 0, 'minRiskLimit': 0, 'maxRiskLimit': 0, 'availableSettlement': None, 'futures': False}
+'''
+
+# min order size
+# min size increment at 0.001 - 3 digitas
+# minPriceIncrement - important that price increment in these intervals of 0.5 only
+
 
 from btseauth_spot import BTSE_Endpoint
 import requests

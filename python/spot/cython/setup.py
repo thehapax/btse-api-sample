@@ -11,6 +11,7 @@ def main():
     setup(
         # ext_modules = cythonize("helloworld.pyx")
         ext_modules=cythonize(["*.pyx"], **cython_kwargs),
+        #ext_modules=cythonize(["hummingbot/**/*.pyx"], **cython_kwargs),
     )
 
 if __name__ == "__main__":
