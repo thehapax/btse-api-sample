@@ -25,17 +25,27 @@ async def del_order(url, params, headers):
     finally:
         await client.close()
 
+
+
 async def main():
-#    cancel_params = {'clOrderID': 'MYOWNORDERID2',
-#                     'symbol': 'BTC-USDT'}
+    # cancel_params = {'clOrderID': 'MYOWNORDERID2',
+    #                  'symbol': 'BTC-USDT'}
     cancel_params = {'orderID': 'b83baf19-7ebe-4997-bfc1-648b06985ad4',
                      'symbol': 'ETH-USDT'}
 
+    cancel_params = {'orderID': 'f88a5638-8c42-4cf4-aaf1-893acf923038',
+                     'symbol': 'BTC-USDT'}
+
+    oidlist = ['2b07a10d-5dbf-4ea7-830a-f1b0dc48e29f', 'd79e9511-4139-4cae-b020-8309f3658d89']
+    
     path = '/api/v3.2/order'
     url = BTSE_Endpoint+path
     headers = make_headers(path, '')
-    msg = await del_order(url=url, params=cancel_params, headers=headers)
-    print(f'Returned message: {msg}')
+    
+    for oid in oidlist:
+        cancel_params = {'orderID': oid, 'symbol': 'BTC-USDT'}
+        msg = await del_order(url=url, params=cancel_params, headers=headers)
+        print(f'Returned message: {msg}')
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())

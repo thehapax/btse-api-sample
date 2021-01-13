@@ -9,9 +9,29 @@ from typing import (
 from btseauth_spot import BTSE_Endpoint, make_headers
 from utils import is_json
 
+
+'''
+orderState , string
+
+ORDER_INSERTED = Order is inserted successfully
+ORDER_CANCELLED = Order is cancelled successfully
+ORDER_FULLY_TRANSACTED = Order is fully transacted
+ORDER_PARTIALLY_TRANSACTED = Order is partially transacted
+STATUS_INACTIVE = Order is inactive (could still be on the order books though)
+
+'''
+
 pp = pprint.PrettyPrinter(indent=4)
 #open_order_params = {'symbol': 'ETH-USDT'}
 open_order_params = {'symbol': 'BTC-USDT'}
+# open_order_params = {'symbol': 'BTC-USDT', 'orderID': ['d79e9511-4139-4cae-b020-8309f3658d89', 'f88a5638-8c42-4cf4-aaf1-893acf923038']}
+# open_order_params = {'symbol': 'BTC-USDT', 'orderID': 'd79e9511-4139-4cae-b020-8309f3658d89'}
+# open_order_params = {'symbol': 'BTC-USDT', 'orderID': ['f88a5638-8c42-4cf4-aaf1-893acf923038']}
+# open_order_params = {'symbol': 'BTC-USDT', 'orderID': ['d79e9511-4139-4cae-b020-8309f3658d89']}
+
+#open_order_params = {'symbol': 'BTC-USDT', 'clOrderID': 'buy-BTC-USDT-1606020895015706'}
+
+
 path = '/api/v3.2/user/open_orders'
 url = BTSE_Endpoint+path
 
@@ -91,11 +111,25 @@ async def allinone():
         path = '/api/v3.2/user/open_orders'
         headers = make_headers(path, '')
         params = open_order_params
-        print(params)
+        print(f'params: {params}\n')
+        print('RESPONSE FROM API:')
+        
         async with aiohttp.ClientSession() as client:
             async with client.request('get', url=url, params=params, headers=headers) as response:
                 result = await response.json()
-                print(result)
+                pp.pprint(result)
+                print(type(result))
+                oIDs = []
+                cIDs = []
+                for order in result:
+                    orderid = order['orderID']
+                    clOrderID = order['clOrderID']
+                    print(f'orderID: {orderid}, clOrderID: {clOrderID}')
+                    oIDs.append(orderid)
+                    cIDs.append(clOrderID)
+                print(oIDs)
+                print(cIDs)
+                    
         await client.close()   
     except Exception as e: 
         print(e)
@@ -104,8 +138,8 @@ loop = asyncio.get_event_loop()
 loop.run_until_complete(allinone())
 
 
-# order_ids, client_ids = get_all_order_ids(response)
-# print(f'Order IDs: {order_ids} \n\nClient IDs: {client_ids}\n')
+#order_ids, client_ids = get_all_order_ids(response)
+#print(f'Order IDs: {order_ids} \n\nClient IDs: {client_ids}\n')
 
 
 #        async with client.get(url, params=params, headers=headers) as response:

@@ -24,7 +24,7 @@ headers = {
 url = BTSE_Endpoint+'/api/v3.2/price'
 print(url)
 
-r = requests.get(url, params={'symbol': 'ETH-USDT'}, headers = headers)
+r = requests.get(url, params={'symbol': 'BTC-USDT'}, headers = headers)
 pp.pprint(r.json())
 print("\n")
 

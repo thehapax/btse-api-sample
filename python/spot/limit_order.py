@@ -67,7 +67,7 @@ limit_order_form = {"symbol": "BTC-USDT",
                     "price": "18637.8",
                     "size": "0.012" }
 
-r_bid_price = 17487.5
+r_bid_price = 15487.5
 r_amount = 0.012
 limit_order_form = {"symbol": "BTC-USDT",
                     "side": "BUY",
