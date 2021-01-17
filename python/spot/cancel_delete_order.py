@@ -30,11 +30,11 @@ async def del_order(url, params, headers):
 async def main():
     # cancel_params = {'clOrderID': 'MYOWNORDERID2',
     #                  'symbol': 'BTC-USDT'}
-    cancel_params = {'orderID': 'b83baf19-7ebe-4997-bfc1-648b06985ad4',
-                     'symbol': 'ETH-USDT'}
+    # cancel_params = {'orderID': 'b83baf19-7ebe-4997-bfc1-648b06985ad4',
+    #                 'symbol': 'ETH-USDT'}
 
-    cancel_params = {'orderID': 'f88a5638-8c42-4cf4-aaf1-893acf923038',
-                     'symbol': 'BTC-USDT'}
+    # cancel_params = {'orderID': 'f88a5638-8c42-4cf4-aaf1-893acf923038',
+    #                 'symbol': 'BTC-USDT'}
 
     oidlist = ['2b07a10d-5dbf-4ea7-830a-f1b0dc48e29f', 'd79e9511-4139-4cae-b020-8309f3658d89']
     

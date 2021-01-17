@@ -106,6 +106,24 @@ async def main():
 #loop.run_until_complete(main())
     
 
+def get_oids(result):
+    # get order ids and client order ids from server result
+    oIDs = []
+    cIDs = []
+    if len(result) == 0:
+        # print(type(result))
+        print("\nNo Results returned")
+        return
+    for order in result:
+        orderid = order['orderID']
+        clOrderID = order['clOrderID']
+        print(f'orderID: {orderid}, clOrderID: {clOrderID}')
+        oIDs.append(orderid)
+        cIDs.append(clOrderID)
+    print("\n"+ oIDs)
+    print(cIDs)
+
+
 async def allinone():
     try:
         path = '/api/v3.2/user/open_orders'
@@ -118,18 +136,8 @@ async def allinone():
             async with client.request('get', url=url, params=params, headers=headers) as response:
                 result = await response.json()
                 pp.pprint(result)
-                print(type(result))
-                oIDs = []
-                cIDs = []
-                for order in result:
-                    orderid = order['orderID']
-                    clOrderID = order['clOrderID']
-                    print(f'orderID: {orderid}, clOrderID: {clOrderID}')
-                    oIDs.append(orderid)
-                    cIDs.append(clOrderID)
-                print(oIDs)
-                print(cIDs)
-                    
+                get_oids(result)
+                
         await client.close()   
     except Exception as e: 
         print(e)
