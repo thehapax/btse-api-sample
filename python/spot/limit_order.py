@@ -5,6 +5,8 @@ from decimal import Decimal
 from utils import get_status_msg
 from btseauth_spot import BTSE_Endpoint, make_headers, get_tracking_nonce
 
+import time 
+
 # this script works on testnet
 # uses REST api v3.1
 
@@ -69,6 +71,10 @@ limit_order_form = {"symbol": "BTC-USDT",
 
 r_bid_price = 15487.5
 r_amount = 0.012
+
+ts = int(time.time())
+clientOID = "buy-BTC-USDT-" + str(ts)
+
 limit_order_form = {"symbol": "BTC-USDT",
                     "side": "BUY",
                     "type": "LIMIT",
@@ -77,8 +83,9 @@ limit_order_form = {"symbol": "BTC-USDT",
                     "triggerPrice": 0,
                     "time_in_force": "GTC",
                     "txType": "LIMIT",
-                    "clOrderID": "buy-BTC-USDT-1606020895015706"}
+                    "clOrderID": f"{clientOID}"}
 
+print(limit_order_form)
 
 path = '/api/v3.2/order'
 url = BTSE_Endpoint+path

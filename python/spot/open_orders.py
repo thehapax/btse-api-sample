@@ -117,11 +117,12 @@ def get_oids(result):
     for order in result:
         orderid = order['orderID']
         clOrderID = order['clOrderID']
-        print(f'orderID: {orderid}, clOrderID: {clOrderID}')
+        #print(f'orderID: {orderid}, clOrderID: {clOrderID}')
         oIDs.append(orderid)
         cIDs.append(clOrderID)
-    print("\n"+ oIDs)
-    print(cIDs)
+
+    print(f'\noIDs: {oIDs}')
+    print(f'cIDs: {cIDs}')
 
 
 async def allinone():
