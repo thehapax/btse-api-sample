@@ -3,6 +3,13 @@ import aiohttp
 from btseauth_spot import make_headers, get_headers
 from decimal import Decimal
 import json
+import time
+
+'''
+ Use this Test script to make sure that limit orders can be placed, status checked, and cancelled
+ before proceeding to test in the hummingbot. It is simpler and doesn't have as many layers to check
+ through. In addition the test methods here cover asyncio
+'''
 
 BTSE_Endpoint = 'https://testapi.btse.io/spot'
 open_order_params = {'symbol': 'BTC-USDT'}
@@ -60,6 +67,9 @@ limit_order_form = {"symbol": "BTC-USDT",
 '''
 
 
+ts = int(time.time())
+clientOID = "buy-BTC-USDT-" + str(ts)
+
 limit_order_form = {"symbol": "BTC-USDT",
                     "side": "BUY", 
                     "type": "LIMIT", 
@@ -67,7 +77,7 @@ limit_order_form = {"symbol": "BTC-USDT",
                     "size": "0.012", 
                     "time_in_force": "GTC", 
                     "txType": "LIMIT", 
-                    "clOrderID": "buy-BTC-USDT-1606020895015706"}
+                    "clOrderID": f"{clientOID}"}
 
 
 ###
@@ -133,7 +143,7 @@ async def cancel_all_orders(session, responses):
         print(r[0]['orderType'])
         ordertype = r[0]['orderType']
         if ordertype == 76: 
-            print("order type is 76")
+            print("order type is 76") # orderState is STATUS_ACTIVE, orderType is 76
             pairs = get_cancelparams(r)
             print(f'Total number of pairs: {len(pairs)}\n\n')
             print(pairs[0])
@@ -146,6 +156,7 @@ async def cancel_all_orders(session, responses):
 
 
 async def place_orders():
+    # place two orders
     tasks = []
     async with aiohttp.ClientSession() as session:
         task2 = asyncio.ensure_future(limit_order(client=session, path=limit_path, params=limit_order_form))
@@ -159,6 +170,7 @@ async def place_orders():
 
 
 async def run(r):
+    # place 2 limit orders, get open orders, cancel all open orders
     tasks = []
     await place_orders()
     async with aiohttp.ClientSession() as session:

@@ -1,41 +1,27 @@
 # get spot market summary, e.g. https://api.btse.com/spot/api/v3.2/market_summary?symbol=BTC-USD
-
-# You can also use wget
-#curl -X GET /api.btse.com/spot/api/v3.2/market_summary?symbol=string \
-#  -H 'Accept: application/json;charset=UTF-8'
-
 '''
 # sample from 11.28.2020
 
-[{'symbol': 'BTC-USDT', 'last': 17873.0, 'lowestAsk': 17867.0, 'highestBid': 17685.0, 'percentageChange': 6.000476701, 'volume': 177198.857630865, 'high24Hr': 17873.003114639, 'low24Hr': 16861.247864965, 'base': 'BTC', 'quote': 'USDT', 'active': True, 'size': 10.249, 'minValidPrice': 0.5, 'minPriceIncrement': 0.5, 'minOrderSize': 0.001, 'maxOrderSize': 2000.0, 'minSizeIncrement': 0.001, 'openInterest': 0.0, 'openInterestUSD': 0.0, 'contractStart': 0, 'contractEnd': 0, 'timeBasedContract': False, 'openTime': 0, 'closeTime': 0, 'startMatching': 0, 'inactiveTime': 0, 'fundingRate': 0.0, 'contractSize': 0.0, 'maxPosition': 0, 'minRiskLimit': 0, 'maxRiskLimit': 0, 'availableSettlement': None, 'futures': False}
+[{'symbol': 'BTC-USDT', 'last': 17873.0, 'lowestAsk': 17867.0, 'highestBid': 17685.0, 
+'percentageChange': 6.000476701, 'volume': 177198.857630865, 'high24Hr': 17873.003114639, 
+'low24Hr': 16861.247864965, 'base': 'BTC', 'quote': 'USDT', 'active': True, 'size': 10.249, 
+'minValidPrice': 0.5, 'minPriceIncrement': 0.5, 'minOrderSize': 0.001, 'maxOrderSize': 2000.0,
+'minSizeIncrement': 0.001, 'openInterest': 0.0, 'openInterestUSD': 0.0, 'contractStart': 0, 
+'contractEnd': 0, 'timeBasedContract': False, 'openTime': 0, 'closeTime': 0, 'startMatching': 0,
+'inactiveTime': 0, 'fundingRate': 0.0, 'contractSize': 0.0, 'maxPosition': 0, 'minRiskLimit': 0, 
+'maxRiskLimit': 0, 'availableSettlement': None, 'futures': False}
 '''
-
-# min order size
-# min size increment at 0.001 - 3 digitas
-# minPriceIncrement - important that price increment in these intervals of 0.5 only
-
 
 from btseauth_spot import BTSE_Endpoint
 import requests
 import pprint 
-import decimal
 import math
 
 pp = pprint.PrettyPrinter(indent=4)
 headers = {
   'Accept': 'application/json;charset=UTF-8'
 }
-
-#    minsizeinc = 0.05
-#    minpriceinc = 1e-08
-
-params = {'symbol': 'BTC-USDT'}
-#params = {'symbol': 'ETH-USDT'}
 BTSE_Endpoint = 'https://testapi.btse.io/spot'
-
-print(f'params: {params}\n')
-price = 34135.436551793
-size = 5857.423
 
 
 # get the min order size
@@ -47,11 +33,11 @@ def get_min_ordersize(r):
       print(f'\nmin order size: {minsize}\n')
       return minsize
     
-
 # round down to the nearest multiple of a
 def round_down(x, a):
     return math.floor(x / a) * a
-  
+
+# round up - to use with minimum order size
 def round_up(x,a):
     return math.ceil(x / a) * a
   
@@ -59,7 +45,8 @@ def round_up(x,a):
 def round_nearest(x, a):
     return round(x / a) * a
 
-def adjust_price_increment(info, price, size):
+# adjust price for order based on btse size/price increment restrictions.
+def adjust_increment(info, price, size):
     minsizeinc = info['minSizeIncrement']
     minpriceinc = info['minPriceIncrement']
     print(f'\nMin Price Increment: {minpriceinc}')
@@ -70,10 +57,10 @@ def adjust_price_increment(info, price, size):
     print(f'\nMin Size Increment: {minsizeinc}')   
     adjusted_size = round_up(size, minsizeinc)
     print(f'>> Adjusted Size: {adjusted_size}')
-    
     return adjusted_price, adjusted_size
     
-    
+
+# Calculate size for order within btse exchange bounds
 def bounded_size(adjusted_size, minsize, maxsize):
   print(f"\nExchange Minsize {minsize}, Maxsize {maxsize}")
   if adjusted_size < maxsize and adjusted_size > minsize:
@@ -91,68 +78,85 @@ def get_market(params):
   r = requests.get(BTSE_Endpoint+'/api/v3.2/market_summary', params=params, headers = headers)
   return r
 
-# 'minOrderSize': 0.001,
-# 'maxOrderSize': 2000.0,
-# 'last': 36639.5,
-# 'size': 4036.991,
-# 'base': 'BTC'
-# 'quote': 'USDT'
 
+def get_one_market(params, size):
+  mkt = get_market(params)
+  mkt_info = mkt.json()
+  
+  info = mkt_info[0]
+  pp.pprint(info)
 
-params = {}  # get all market info
-mkt = get_market(params)
-mkt_info = mkt.json()
-# pp.pprint(mkt_info)
-
-num_symbols = len(mkt_info)
-print(f'total pairs: {num_symbols}')
-
-index = 0
-# size = 0.50004 # user determined size of trade
-# info = mkt_info[index]
-# price = info['low24Hr']
-# adjusted_price, adjusted_size = adjust_price_increment(mkt_info[index], price, size)
-#  high24 = info['high24Hr']
-#  highestBid = info['highestBid']
-#  lowestAsk = info['lowestAsk']
-#  size = info['size']
-
-
-for info in mkt_info:
+  lAsk = info['lowestAsk']
+  hBid = info['highestBid'] 
   symbol = info['symbol']
-  low24 = info['low24Hr']
- 
-  price = low24
-  size = 0.05
 
-  print(f'\n >>> Symbol: {symbol},\n low24 price: {price},\n size: {size}')
-  adjusted_price, adjusted_size = adjust_price_increment(mkt_info[index], price, size)
+  # Example: take the average of low Ask and high Bid for your new limit order
+  price = (lAsk + hBid)/2
+  
+  adjusted_price, adjusted_size = adjust_increment(info, price, size)
   
   minsize = info['minOrderSize']
   maxsize = info['maxOrderSize']
-  a_size = bounded_size(adjusted_size, minsize, maxsize)
-  
-  print(f'\nadjusted price {adjusted_price}, adjusted size {a_size}, pre-adjusted size {adjusted_size}')
+  final_size = bounded_size(adjusted_size, minsize, maxsize)
+
+  print(f'\n >>> Symbol: {symbol},\n Order Size desired: {size}')
+  print(f'\n lowest Ask {lAsk}, highest Bid: {hBid}')  
+  print(f'\nadjusted price {adjusted_price}, adjusted size {final_size}, pre-adjusted size {adjusted_size}')
   print("==============================")
+  return adjusted_price, final_size
 
-# Place 3 orders with unique cOrderIds, get order statuses based on cOrderIds, cancel 3 orders. 
+  
+def get_all_markets(size):
+  params = {}  # get all market info
+  mkt = get_market(params)
+  mkt_info = mkt.json()
+  # pp.pprint(mkt_info)
+  num_symbols = len(mkt_info)
+  print(f'total pairs: {num_symbols}')
+
+  index = 0
+
+  for info in mkt_info:
+    symbol = info['symbol']
+    lAsk = info['lowestAsk']
+    hBid = info['highestBid']
+    price = (lAsk + hBid)/2
+
+    print(f'\n >>> Symbol: {symbol},\n low24 price: {price},\n size: {size}')
+    adjusted_price, adjusted_size = adjust_increment(mkt_info[index], price, size)
+    
+    minsize = info['minOrderSize']
+    maxsize = info['maxOrderSize']
+    a_size = bounded_size(adjusted_size, minsize, maxsize)
+    
+    print(f'\nadjusted price {adjusted_price}, adjusted size {a_size}, pre-adjusted size {adjusted_size}')
+    print("==============================")
 
 
-'''
-print("----")
-pp.pprint(res)
-print("----")
 
-minPrice = res.get('minPriceIncrement')  # type is float
-minSize = res.get('minSizeIncrement')  # type is float
-print(str(params))
+if __name__ == '__main__':
+  #params = {'symbol': 'ETH-USDT'}
+  params = {'symbol': 'BTC-USDT'}
+  print(f'params: {params}\n')
+  size = 0.05  # this is the size of the order to be placed on exchange.
+  get_one_market(params, size)
+  get_all_markets()
 
-print("minPriceIncrement: " + str(minPrice))
-print("minSizeIncrement: " + str(minSize))
-'''
 
-#print("==========>>>>>>>>>>")
-#pp.pprint(r.json())
+
+#################
+
+# min order size
+# min size increment at 0.001 - 3 digits
+# minPriceIncrement - important that price increment in these intervals of 0.5 only
+# 'minOrderSize': 0.001,
+# 'maxOrderSize': 2000.0,
+# 'last': 36639.5,
+# 'size': 4036.991, - size refers the 24 volume
+# 'base': 'BTC'
+# 'quote': 'USDT'
+#  minsizeinc = 0.05
+#  minpriceinc = 1e-08
 
 '''
 from market exchange crypto.com example

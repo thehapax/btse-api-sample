@@ -28,9 +28,9 @@ def orderbook_payload():
     # Order book subscription, 5 levels, public data
     payload = {
         "op":"subscribe",
-        "args":["orderBookL2Api:ETH-USDT_5"] # up to 150 entries
+        "args":["orderBookL2Api:BTC-USDT_5"] # up to 150 entries
     }
-    print("sending order book eth-usdt-5 payload")
+    print("sending order book btc-usdt-5 payload")
     return payload
 
 def tradehistory_payload():
@@ -38,7 +38,7 @@ def tradehistory_payload():
     # tradehistory is public data
     payload = {
         "op":"subscribe",
-        "args":["tradeHistoryApi:ETH-USDT"]
+        "args":["tradeHistoryApi:BTC-USDT"]
     }
     return payload
 
@@ -79,10 +79,10 @@ async def connect_forever():
         # Subscription - order notifications
         user_payload = subscription_payload()
         ob_payload = orderbook_payload()
-#        trade_payload = tradehistory_payload()
+        trade_payload = tradehistory_payload()
         await websocket.send(ujson.dumps(user_payload))
-        await websocket.send(ujson.dumps(ob_payload))
-#        await websocket.send(ujson.dumps(trade_payload))
+#        await websocket.send(ujson.dumps(ob_payload))
+        await websocket.send(ujson.dumps(trade_payload))
 
         MESSAGE_TIMEOUT = 30.0
 

@@ -15,7 +15,10 @@ api_pass = os.environ['BTSE_SECRET_KEY']
 
 # production
 #BTSE_Endpoint = 'https://api.btse.com/spot'
-#BTSE_WSEndpoint = 'wss://ws.btse.com'
+#BTSE_WSEndpoint = 'wss://ws.btse.com' # old endpoint
+
+# new endpoint as of 19 Jan 2021 wss://ws.btse.com/ws/spot 
+
 
 # Testnet
 BTSE_WSEndpoint = 'wss://testws.btse.io'
@@ -92,7 +95,7 @@ def make_headers(path: str, data: str="") -> Dict[str, any]:
     nonce = str(int(time.time()*1000))
     #print("nonce:" + nonce)
     message = path + nonce + data
-    print(f'MESSAGE: {message}')
+    print(f'make_headers - MESSAGE: {message}')
     headers = {}
     passph = keypair['API-PASSPHRASE']
     #print(f'api-pass: {passph}')

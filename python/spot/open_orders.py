@@ -29,7 +29,10 @@ open_order_params = {'symbol': 'BTC-USDT'}
 # open_order_params = {'symbol': 'BTC-USDT', 'orderID': ['f88a5638-8c42-4cf4-aaf1-893acf923038']}
 # open_order_params = {'symbol': 'BTC-USDT', 'orderID': ['d79e9511-4139-4cae-b020-8309f3658d89']}
 
-#open_order_params = {'symbol': 'BTC-USDT', 'clOrderID': 'buy-BTC-USDT-1606020895015706'}
+open_order_params = {'symbol': 'BTC-USDT', 'clOrderID': 'buy-BTC-USDT-1606020895015706'}
+
+#open_order_params = {'clOrderID': 'buy-BTC-USDT-1606020895015706'}
+#open_order_params = {'symbol': 'BTC-USDT'}
 
 
 path = '/api/v3.2/user/open_orders'

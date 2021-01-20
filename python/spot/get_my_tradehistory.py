@@ -3,23 +3,63 @@ import json
 from btseauth_spot import BTSE_Endpoint, make_headers
 import pprint
 from decimal import Decimal
+import time
+
+_last_tracking_nonce = 0
+_last_tracking_nonce_low_res = 0
+
+# This tracking nonce is needed bc resolution for time.time() on Windows is very low (16ms),
+# not good enough to create unique order_id.
+def get_tracking_nonce() -> int:
+    global _last_tracking_nonce
+    nonce = int(time.time() * 1e6)
+    _last_tracking_nonce = nonce if nonce > _last_tracking_nonce else _last_tracking_nonce + 1
+    return _last_tracking_nonce
+
+def get_tracking_nonce_low_res() -> int:
+    global _last_tracking_nonce_low_res
+    nonce = int(time.time() * 1e3)
+    _last_tracking_nonce_low_res = nonce if nonce > _last_tracking_nonce_low_res else _last_tracking_nonce_low_res + 1
+    return _last_tracking_nonce_low_res
+
 
 pp = pprint.PrettyPrinter(indent=4)
 path = '/api/v3.2/user/trade_history'
 
 # 'serialId': 111129514,
-
 # params = {}
 # must use startTime in order to filter appropriately, or too much data returned
 # 13 digit timestamp
 
 #params={'symbol': 'BTC-USD',
 
-params = { 'orderId': 'b3a65f8e-e838-4c13-adf4-62fef98504a1',
-        'startTime': 1602229229000 } 
+# clOrderID': 'buy-BTC-USDT-1606020895015706'
+'''
+params = {'symbol': 'BTC-USDT', 
+          'orderId': '7bda5bcc-68fb-459e-8376-bcd8137600c9',
+          'startTime': 1602229229000 } 
+'''
+# 1602229229000
+# 1611042043073
+# 1611041950804762
 
+params = {'symbol': 'BTC-USDT', 
+         'orderId': '7bda5bcc-68fb-459e-8376-bcd8137600c9',
+          'startTime': 1611040430000}
+# 1611040433171
+#          'startTime': get_tracking_nonce_low_res()-10000000000} 
 
-r = requests.get(BTSE_Endpoint+path,
+params = {'orderId': 'a01416b4-96b7-429e-8ed4-33ee8bf06d0a',
+         'startTime': 1606469000000 }
+
+# 'timestamp': 1606469069000
+
+print(f'Params: {params}')
+
+fullpath = BTSE_Endpoint+path
+print(f'REST API: {fullpath}')
+
+r = requests.get(fullpath,
                 params=params,
                 headers=make_headers(path, ''))
 
