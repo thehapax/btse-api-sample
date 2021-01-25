@@ -1,5 +1,4 @@
 import requests
-import json
 import aiohttp
 import asyncio
 import pprint 
@@ -8,6 +7,8 @@ from typing import (
 )
 from btseauth_spot import BTSE_Endpoint, make_headers
 from utils import is_json
+
+# import json
 
 
 '''
@@ -30,6 +31,7 @@ open_order_params = {'symbol': 'BTC-USDT'}
 # open_order_params = {'symbol': 'BTC-USDT', 'orderID': ['d79e9511-4139-4cae-b020-8309f3658d89']}
 
 open_order_params = {'symbol': 'BTC-USDT', 'clOrderID': 'buy-BTC-USDT-1606020895015706'}
+#open_order_params = {'clOrderID': 'buy-BTC-USDT-1606020895015706'}
 
 #open_order_params = {'clOrderID': 'buy-BTC-USDT-1606020895015706'}
 #open_order_params = {'symbol': 'BTC-USDT'}
@@ -37,6 +39,8 @@ open_order_params = {'symbol': 'BTC-USDT', 'clOrderID': 'buy-BTC-USDT-1606020895
 
 path = '/api/v3.2/user/open_orders'
 url = BTSE_Endpoint+path
+print(f'url: {url}')
+
 
 # method to check if orderID = dac5fa04-e419-4054-8fc3-1ed922d595c1 is still an openorder
 def get_active_order(id, trade_msg: Dict[str, any]):
